@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/09 15:13:37 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/09 16:51:52 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,63 +144,82 @@ float	round_to_n_decimals(float number, int n)
 	return (roundf(number * factor) / factor);
 }
 
-void	draw_column(t_cub *cub, float *d, int c, int orientation)
+void	draw_column(t_cub *cub, float *d, int c, int color)
 {
 	int	h;
 	int	roof_floor;
 	int	y;
-	
+
 	h = (int)roundf(900 / *d);
 	y = 0;
 	if (h > 900)
 	{
 		while (y < 900)
-			mlx_pixel_put(cub->init, cub->win, c, y++, orientation);
+			mlx_pixel_put(cub->init, cub->win, c, y++, color);
 	}
 	else
 	{
 		roof_floor = (900 - h);
 		while (y < roof_floor * 0.5)
-			mlx_pixel_put(cub->init, cub->win, c, y++, 0xFFFFFF);
+			mlx_pixel_put(cub->init, cub->win, c, y++, 0xC0C0C0);
 		while (y < 900 - (roof_floor * 0.5))
-			mlx_pixel_put(cub->init, cub->win, c, y++, orientation);
+			mlx_pixel_put(cub->init, cub->win, c, y++, color);
 		while (y < 900)
 			mlx_pixel_put(cub->init, cub->win, c, y++, 0xFFFFFF);
 	}
 }
 
+int	ft_hit_wall(float x, float y, float *step, t_cub *cub)
+{
+	if (is_integer(round_to_n_decimals(y, 2)))
+	{
+		if (step[1] > 0)
+		{
+			if (cub->map[(int)round_to_n_decimals(y, 2)][(int)floorf(x)] == '1')
+				return (1);
+		}
+		else if (step[1] < 0)
+			if (cub->map[(int)round_to_n_decimals(y, 2) - 1][(int)floorf(x)] == '1')
+				return (1);
+	}
+	else if (is_integer(round_to_n_decimals(x, 2)))
+	{
+		if (step[0] > 0)
+		{
+			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2)] == '1')
+				return (1);
+		}
+		else if (step[0] < 0)
+			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2) - 1] == '1')
+				return (1);
+	}
+	return (0);
+}
+
 int	loop(t_cub *cub)
 {
-	float	x;
-	float	y;
+	float	coo[2];
 	float	d;
 	float	angle;
-	float	dx, dy;
+	float	step[2];
 	int		column;
 
 	column = 0;
 	angle = atan2f(cub->player.dir.y, cub->player.dir.x) - (M_PI / 4);
 	while (column < 1800)
 	{
-		x = cub->player.x;
-		y = cub->player.y;
-		dx = cosf(angle) * 0.01;
-		dy = sinf(angle) * 0.01;
-		while (1)
+		coo[0] = cub->player.x;
+		coo[1] = cub->player.y;
+		step[0] = cosf(angle) * 0.005;
+		step[1] = sinf(angle) * 0.005;
+		while (!ft_hit_wall(coo[0], coo[1], step, cub))
 		{
-			if (is_integer(round_to_n_decimals(x, 2)))
-				if (cub->map[(int)round_to_n_decimals(x, 2)][(int)floorf(y)] == '1')
-					break ;
-			if (is_integer(round_to_n_decimals(y, 2)))
-				if (cub->map[(int)floorf(x)][(int)round_to_n_decimals(y, 2)] == '1')
-					break ;
-			x += dx;
-			y += dy;
+			coo[0] += step[0];
+			coo[1] += step[1];
 		}
-		d = sqrtf(((x - cub->player.x) * (x - cub->player.x))
-			+ ((y - cub->player.y) * (y - cub->player.y)));
-		draw_column(cub, &d, column, 0x404040);
-		column++;
+		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
+			+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
+		draw_column(cub, &d, column++, 0x404040);
 		angle += ANGLE_STEP;
 	}
 	return (0);
@@ -243,8 +262,9 @@ int	main(int ac, char **av)
 	init_cub(&cub, av[1]);
 	if (!cub.map || cub.player.x == -1 || cub.player.y == -1)
 		return (1);
-	mlx_key_hook(cub.win, key_press, &cub);
+	// mlx_key_hook(cub.win, key_press, &cub);
 	mlx_loop_hook(cub.init,  loop, &cub);
+	mlx_hook(cub.win, 2, 1, key_press, &cub);
 	mlx_hook(cub.win, 17, 0, clean_exit, &cub);
 	mlx_loop(cub.init);
 	return (0);
