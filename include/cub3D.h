@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 12:43:54 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:09:51 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ int			ft_count_line(char *path);
 char		**create_map(char *path);
 void		init_cub(t_cub *cub, char *path);
 
+/* KEY PRESS */
+
+int			key_press(int key, t_cub *cub);
+
 /* RAYCASTING FUNCTIONS */
 
 void		draw_column(t_cub *cub, float *d, int c, int color);
@@ -67,6 +71,7 @@ int			ft_hit_wall(float x, float y, float *step, t_cub *cub);
 
 /* UTILS */
 
+int			clean_exit(t_cub *cub);
 t_vector	create_vector(float n, float x, float y);
 float		round_to_n_decimals(float number, int n);
 int			is_integer(float num);
