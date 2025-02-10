@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 16:34:47 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:43:08 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <fcntl.h>
 
 # define M_PI 3.14159265358979323846
-# define ANGLE_STEP (M_PI / 3600)
+# define ANGLE_STEP 0.000873 // (pi / 2) / 1800
 
 /* STRUCTURES */
 
