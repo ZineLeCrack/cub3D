@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 12:45:11 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 12:46:23 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ float	round_to_n_decimals(float number, int n)
 {
 	float	factor;
 
-	factor = powf(10.0f, n);
+	factor = powf(10, n);
 	return (roundf(number * factor) / factor);
 }
 

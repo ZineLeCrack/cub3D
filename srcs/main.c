@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 12:40:25 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 12:48:15 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	key_press(int key, t_cub *cub)
 {
 	static float	angle = 0;
 
+	if (key == 65307)
+		clean_exit(cub);
 	if (key == 'w')
 	{
 		cub->player.x += cub->player.dir.x * 0.2;
