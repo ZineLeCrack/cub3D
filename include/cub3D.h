@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/09 12:43:20 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/10 12:43:54 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define M_PI 3.14159265358979323846
 # define ANGLE_STEP (M_PI / 3600)
+
+/* STRUCTURES */
 
 typedef struct s_vector
 {
@@ -50,5 +52,23 @@ typedef struct s_cub
 	int			keys[65536];
 	t_player	player;
 }	t_cub;
+
+/* INIT DATA */
+
+t_player	init_player(t_cub *cub);
+int			ft_count_line(char *path);
+char		**create_map(char *path);
+void		init_cub(t_cub *cub, char *path);
+
+/* RAYCASTING FUNCTIONS */
+
+void		draw_column(t_cub *cub, float *d, int c, int color);
+int			ft_hit_wall(float x, float y, float *step, t_cub *cub);
+
+/* UTILS */
+
+t_vector	create_vector(float n, float x, float y);
+float		round_to_n_decimals(float number, int n);
+int			is_integer(float num);
 
 #endif
