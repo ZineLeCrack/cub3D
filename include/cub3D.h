@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 13:09:51 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:34:47 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int			key_press(int key, t_cub *cub);
 
 /* RAYCASTING FUNCTIONS */
 
-void		draw_column(t_cub *cub, float *d, int c, int color);
+void		raytracing(t_cub *cub, float angle, int infos[3], char *addr);
+void		draw_column(float *d, int c[2], char *addr, int infos[3]);
 int			ft_hit_wall(float x, float y, float *step, t_cub *cub);
 
 /* UTILS */

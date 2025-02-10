@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 13:09:59 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:57:14 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,17 @@
 
 int	loop(t_cub *cub)
 {
-	float	coo[2];
-	float	d;
+	void	*img;
+	char	*addr;
+	int		img_infos[3];
 	float	angle;
-	float	step[2];
-	int		column;
 
-	column = 0;
 	angle = atan2f(cub->player.dir.y, cub->player.dir.x) - (M_PI / 4);
-	while (column < 1800)
-	{
-		coo[0] = cub->player.x;
-		coo[1] = cub->player.y;
-		step[0] = cosf(angle) * 0.005;
-		step[1] = sinf(angle) * 0.005;
-		while (!ft_hit_wall(coo[0], coo[1], step, cub))
-		{
-			coo[0] += step[0];
-			coo[1] += step[1];
-		}
-		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
-				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
-		draw_column(cub, &d, column++, 0x404040);
-		angle += ANGLE_STEP;
-	}
+	img = mlx_new_image(cub->init, 1800, 900);
+	addr = mlx_get_data_addr(img, &img_infos[0], &img_infos[1], &img_infos[2]);
+	raytracing(cub, angle, img_infos, addr);
+	mlx_put_image_to_window(cub->init, cub->win, img, 0, 0);
+	mlx_destroy_image(cub->init, img);
 	return (0);
 }
 
