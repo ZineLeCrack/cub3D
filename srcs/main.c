@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 15:57:14 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:48:58 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	loop(t_cub *cub)
 	angle = atan2f(cub->player.dir.y, cub->player.dir.x) - (M_PI / 4);
 	img = mlx_new_image(cub->init, 1800, 900);
 	addr = mlx_get_data_addr(img, &img_infos[0], &img_infos[1], &img_infos[2]);
+	turn_cam(cub);
+	moves(cub);
 	raytracing(cub, angle, img_infos, addr);
 	mlx_put_image_to_window(cub->init, cub->win, img, 0, 0);
 	mlx_destroy_image(cub->init, img);
@@ -40,6 +42,7 @@ int	main(int ac, char **av)
 		return (1);
 	mlx_loop_hook(cub.init, loop, &cub);
 	mlx_hook(cub.win, 2, 1, key_press, &cub);
+	mlx_hook(cub.win, 3, 2, key_release, &cub);
 	mlx_hook(cub.win, 17, 0, clean_exit, &cub);
 	mlx_loop(cub.init);
 	return (0);

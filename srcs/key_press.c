@@ -6,57 +6,64 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:07:26 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 13:13:58 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:48:49 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-static void	moves(int key, t_cub *cub)
+void	moves(t_cub *cub)
 {
-	if (key == 'w')
+	if (cub->keys['w'])
 	{
 		cub->player.x += cub->player.dir.x * 0.2;
 		cub->player.y += cub->player.dir.y * 0.2;
 	}
-	if (key == 's')
+	if (cub->keys['s'])
 	{
 		cub->player.x -= cub->player.dir.x * 0.2;
 		cub->player.y -= cub->player.dir.y * 0.2;
 	}
-	if (key == 'a')
+	if (cub->keys['a'])
 	{
 		cub->player.x += cub->player.dir.y * 0.2;
 		cub->player.y -= cub->player.dir.x * 0.2;
 	}
-	if (key == 'd')
+	if (cub->keys['d'])
 	{
 		cub->player.x -= cub->player.dir.y * 0.2;
 		cub->player.y += cub->player.dir.x * 0.2;
 	}
 }
 
-static void	turn_cam(int key, t_cub *cub)
+void	turn_cam(t_cub *cub)
 {
 	static float	angle = 0;
 
-	if (key == 65363)
+	if (cub->keys[65363])
 	{
 		angle += M_PI / 45;
 		cub->player.dir = create_vector(1, cosf(angle), sinf(angle));
 	}
-	if (key == 65361)
+	if (cub->keys[65361])
 	{
 		angle -= M_PI / 45;
 		cub->player.dir = create_vector(1, cosf(angle), sinf(angle));
 	}
 }
 
+int	key_release(int key, t_cub *cub)
+{
+	if (key >= 0 && key <= 65536)
+		cub->keys[key] = 0;
+	return (0);
+}
+
 int	key_press(int key, t_cub *cub)
 {
 	if (key == 65307)
 		clean_exit(cub);
-	moves(key, cub);
-	turn_cam(key, cub);
+	if (key >= 0 && key <= 65536)
+		cub->keys[key] = 1;
 	return (0);
 }

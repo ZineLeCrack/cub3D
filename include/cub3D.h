@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 16:43:08 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:48:31 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ void		init_cub(t_cub *cub, char *path);
 
 /* KEY PRESS */
 
+void		moves(t_cub *cub);
+void		turn_cam(t_cub *cub);
+int			key_release(int key, t_cub *cub);
 int			key_press(int key, t_cub *cub);
 
 /* RAYCASTING FUNCTIONS */
