@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 12:40:18 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:56:29 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	**create_map(char *path)
 		i++;
 	}
 	map[i] = NULL;
+	if (!is_map_ok(map))
+		return (NULL);
 	return (map);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 13:09:51 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:54:07 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,16 @@ int			clean_exit(t_cub *cub);
 t_vector	create_vector(float n, float x, float y);
 float		round_to_n_decimals(float number, int n);
 int			is_integer(float num);
+
+/* MAP PARSING */
+
+int			is_map_ok(char **map);
+int			is_map_closed(char **map);
+int			flood_fill(char **map);
+int			is_one_player(char **map);
+
+/* FREE */
+
+void		free_arrstr(char **array);
 
 #endif
