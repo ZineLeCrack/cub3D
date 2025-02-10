@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:07:26 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 17:48:49 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:36:29 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	turn_cam(t_cub *cub)
 {
 	static float	angle = 0;
 
-	if (cub->keys[65363])
+	if (cub->keys[65363] == 1)
 	{
 		angle += M_PI / 45;
 		cub->player.dir = create_vector(1, cosf(angle), sinf(angle));
 	}
-	if (cub->keys[65361])
+	if (cub->keys[65361] == 1)
 	{
 		angle -= M_PI / 45;
 		cub->player.dir = create_vector(1, cosf(angle), sinf(angle));

@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 17:48:58 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:42:21 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	loop(t_cub *cub)
 	moves(cub);
 	raytracing(cub, angle, img_infos, addr);
 	mlx_put_image_to_window(cub->init, cub->win, img, 0, 0);
+	draw_minimap(cub, addr, img_infos);
 	mlx_destroy_image(cub->init, img);
 	return (0);
 }
@@ -40,10 +41,10 @@ int	main(int ac, char **av)
 	init_cub(&cub, av[1]);
 	if (!cub.map || cub.player.x == -1 || cub.player.y == -1)
 		return (1);
-	mlx_loop_hook(cub.init, loop, &cub);
 	mlx_hook(cub.win, 2, 1, key_press, &cub);
 	mlx_hook(cub.win, 3, 2, key_release, &cub);
 	mlx_hook(cub.win, 17, 0, clean_exit, &cub);
+	mlx_loop_hook(cub.init, loop, &cub);
 	mlx_loop(cub.init);
 	return (0);
 }

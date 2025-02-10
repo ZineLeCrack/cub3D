@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 16:43:18 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:38:49 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ void	init_cub(t_cub *cub, char *path)
 {
 	int	i;
 
+	i = 0;
+	while (i < 65536)
+        cub->keys[i++] = 0;
 	i = 0;
 	cub->map = create_map(path);
 	if (!cub->map)
