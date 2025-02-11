@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 12:56:55 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:00:59 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	draw_column(float *d, int c[2], char *addr, int infos[3])
 
 	h = (int)roundf(900 / *d);
 	if (h < 0)
-		h = 0;
+		h = 1000;
 	color = c[1];
 	coo[0] = c[0];
 	coo[1] = -1;
