@@ -6,11 +6,25 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 15:56:29 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/11 18:57:31 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+static t_player	init_player_dir(t_player *player, char **map, int i, int j)
+{
+	player->x = j + 0.5;
+	player->y = i + 0.5;
+	if (map[i][j] == 'N')
+		player->dir = create_vector(1, cosf(0), sinf(0));
+	if (map[i][j] == 'E')
+		player->dir = create_vector(1, cosf(0), sinf(0));
+	if (map[i][j] == 'S')
+		player->dir = create_vector(1, cosf(0), sinf(0));
+	if (map[i][j] == 'O')
+		player->dir = create_vector(1, cosf(0), sinf(0));
+}
 
 t_player	init_player(t_cub *cub)
 {
@@ -27,10 +41,10 @@ t_player	init_player(t_cub *cub)
 		j = 0;
 		while (cub->map[i][j])
 		{
-			if (cub->map[i][j] == 'P')
+			if (cub->map[i][j] == 'N' || cub->map[i][j] == 'S'
+				|| cub->map[i][j] == 'O' || cub->map[i][j] == 'E')
 			{
-				player.x = j + 0.5;
-				player.y = i + 0.5;
+				init_player_dir(&player, cub->map, i, j);
 				return (player);
 			}
 			j++;
@@ -61,39 +75,13 @@ int	ft_count_line(char *path)
 	return (count);
 }
 
-char	**create_map(char *path)
-{
-	char	**map;
-	char	*line;
-	int		fd;
-	int		i;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ft_putstr_fd("error: failed to open file\n", 2), NULL);
-	map = malloc(sizeof(char *) * (ft_count_line(path) + 1));
-	if (!map)
-		return (ft_putstr_fd("error: malloc failed\n", 2), NULL);
-	line = get_next_line(fd);
-	i = 0;
-	while (line)
-	{
-		map[i] = line;
-		line = get_next_line(fd);
-		i++;
-	}
-	map[i] = NULL;
-	if (!is_map_ok(map))
-		return (NULL);
-	return (map);
-}
-
 void	init_cub(t_cub *cub, char *path)
 {
 	int	i;
 
 	i = 0;
-	cub->map = create_map(path);
+	if (!parsing(cub, path))
+		return ;
 	if (!cub->map)
 		return ;
 	cub->player = init_player(cub);

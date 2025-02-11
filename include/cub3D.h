@@ -6,7 +6,7 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 16:54:07 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/11 18:17:43 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ typedef struct s_player
 
 typedef struct s_cub
 {
+	char		*north_path;
+	char		*south_path;
+	char		*west_path;
+	char		*east_path;
+	int			f_color;
+	int			c_color;
 	char		**map;
 	void		*init;
 	void		*win;
