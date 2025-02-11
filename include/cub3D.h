@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/10 18:42:40 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:40:33 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void		draw_minimap(t_cub *cub, char *addr, int infos[3]);
 
 int			clean_exit(t_cub *cub);
 t_vector	create_vector(float n, float x, float y);
+int			get_heigth(t_cub *cub);
+int			get_length(t_cub *cub, float y);
 float		round_to_n_decimals(float number, int n);
 int			is_integer(float num);
 

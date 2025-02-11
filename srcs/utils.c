@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 18:36:05 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:39:48 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,27 @@ int	clean_exit(t_cub *cub)
 	free(cub->init);
 	exit(0);
 	return (0);
+}
+
+int	get_heigth(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	while (cub->map[i])
+		i++;
+	return (i);
+}
+
+int	get_length(t_cub *cub, float y)
+{
+	int	i;
+
+	y = floorf(y);
+	i = 0;
+	while (cub->map[(int)y][i] && cub->map[(int)y][i] != '\n')
+		i++;
+	return (i);
 }
 
 t_vector	create_vector(float n, float x, float y)

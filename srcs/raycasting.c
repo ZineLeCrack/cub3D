@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 18:36:08 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:42:06 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 {
 	char	*dst;
 
+	if (coo[0] < 0 || coo[0] >= 1800 || coo[1] < 0 || coo[1] >= 900)
+		return ;
 	dst = addr + (coo[1] * infos[1] + coo[0] * (infos[0] / 8));
 	*(unsigned int *)dst = color;
 }
@@ -28,6 +30,8 @@ void	draw_column(float *d, int c[2], char *addr, int infos[3])
 	int	coo[2];
 
 	h = (int)roundf(900 / *d);
+	if (h < 0)
+		h = 0;
 	color = c[1];
 	coo[0] = c[0];
 	coo[1] = -1;

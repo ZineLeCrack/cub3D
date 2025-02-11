@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/10 18:49:13 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:48:42 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_player	init_player(t_cub *cub)
 	int			j;
 
 	i = 0;
-	player.dir = create_vector(1, cosf(0), sinf(0));
-	player.rseg = create_vector(1, -1 * sinf(0), cosf(0));
-	player.lseg = create_vector(1, sinf(0), -1 * cosf(0));
+	player.dir = create_vector(1, cosf(-M_PI / 2), sinf(-M_PI / 2));
+	player.rseg = create_vector(1, -1 * sinf(-M_PI / 2), cosf(-M_PI / 2));
+	player.lseg = create_vector(1, sinf(-M_PI / 2), -1 * cosf(-M_PI / 2));
 	while (cub->map[i])
 	{
 		j = 0;
