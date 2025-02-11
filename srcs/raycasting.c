@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 14:00:59 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:48:50 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,31 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 	*(unsigned int *)dst = color;
 }
 
-void	draw_column(float *d, int c[2], char *addr, int infos[3])
+void	draw_column(float *d, int c[3], char *addr, int infos[3])
 {
 	int	h;
 	int	roof_floor;
-	int	color;
+	int	color[4];
 	int	coo[2];
 
+	color[0] = 0x000000;
+	color[1] = 0x303030;
+	color[2] = 0x606060;
+	color[3] = 0x909090;
 	h = (int)roundf(900 / *d);
-	if (h < 0)
-		h = 1000;
-	color = c[1];
 	coo[0] = c[0];
 	coo[1] = -1;
-	if (h > 900)
+	if (h > 900 || h < 0)
 	{
 		while (++coo[1] < 900)
-			my_mlx_pixel_put(addr, coo, color, infos);
+			my_mlx_pixel_put(addr, coo, color[c[1]], infos);
 		return ;
 	}
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
 		my_mlx_pixel_put(addr, coo, 0xC0C0C0, infos);
 	while (++coo[1] < 900 - (roof_floor * 0.5))
-		my_mlx_pixel_put(addr, coo, color, infos);
+		my_mlx_pixel_put(addr, coo, color[c[1]], infos);
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(addr, coo, 0xFFFFFF, infos);
 }
@@ -64,7 +65,7 @@ int	ft_hit_wall(float x, float y, float *step, t_cub *cub)
 				== '1')
 				return (1);
 	}
-	else if (is_integer(round_to_n_decimals(x, 2)))
+	if (is_integer(round_to_n_decimals(x, 2)))
 	{
 		if (step[0] > 0)
 		{
@@ -87,7 +88,6 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 	float	coo[2];
 
 	c[0] = 0;
-	c[1] = 0x404040;
 	while (c[0] < 1800)
 	{
 		coo[0] = cub->player.x;
@@ -101,6 +101,7 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 		}
 		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
 				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
+		c[1] = get_dir(step[0], step[1], coo[0]);
 		draw_column(&d, c, addr, infos);
 		c[0]++;
 		angle += ANGLE_STEP;
