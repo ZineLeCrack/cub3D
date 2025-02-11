@@ -37,35 +37,100 @@ char	**read_scene(char *path)
 	return (scene);
 }
 
-int	read_scene_texture(t_cub *cub, char *line, int j)
+static int	generate_color(char *r, char *g, char *b)
 {
-	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path))
-		cub->north_path = get_texture_path(line, j + 2);
-	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path))
-		cub->south_path = get_texture_path(line, j + 2);
-	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path))
-		cub->west_path = get_texture_path(line, j + 2);
-	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path))
-		cub->east_path = get_texture_path(line, j + 2);
+	int	colors[3];
+
+	colors[0] = ft_atoi(r);
+	colors[1] = ft_atoi(g);
+	colors[2] = ft_atoi(b);
+	if (!colors[0] && !colors[1] && !colors[2])
+		return (0);
+	if (colors[0] > 255)
+		colors[0] = 255;
+	if (colors[1] > 255)
+		colors[1] = 255;
+	if (colors[2] > 255)
+		colors[2] = 255;
+	return (255 << 24) + (colors[0] << 16) + (colors[1] << 8) + (colors[2] << 0);
+}
+
+static int	read_scene_color(t_cub *cub, char *line, int *i)
+{
+	int		j;
+	char	**split;
+	int		color;
+
+	j = 0;
+	while (line[j] == ' ' || line[j] == '\t')
+		j++;
+	if ((line[j] == 'C' || line[j] == 'F')
+		&& (line[j + 1] == ' ' || line[j + 1] == '\t'))
+	{
+		split = ft_split(&(line[j]), ',');
+		if (!split)
+			return (0);
+		if (!split[0] || !split[1] || !split[3])
+			return (free_arrstr(split), 0);
+		color = generate_color(split[0], split[1], split[3]);
+		if (!color)
+			return (free_arrstr(split), 0);
+		if (line[j] == 'F')
+			cub->f_color = color;
+		else if (line[j] == 'C')
+			cub->c_color = color;
+		return (free_arrstr(split), (*i)++, 1);
+	}
 	return (1);
 }
 
-int	read_scene_args(t_cub *cub, char **scene)
+char	*get_texture_path(char *line, int j)
 {
-	int	i;
+	char	*path;
+	int		k;
+
+	k = j;
+	while (line[k] && line[k] != '\n' && line[k] != ' ' && line[k] != '\t')
+		k++;
+	path = ft_substr(line, j, k - j);
+	if (!path)
+		return (NULL);
+	return (path);
+}
+
+static int	read_scene_texture(t_cub *cub, char *line, int *i)
+{
 	int	j;
 
+	j = 0;
+	while (line[j] == ' ' || line[j] == '\t')
+		j++;
+	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path))
+		return (cub->north_path = get_texture_path(line, j + 2), (*i)++, 1);
+	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path))
+		return (cub->south_path = get_texture_path(line, j + 2), (*i)++, 1);
+	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path))
+		return (cub->west_path = get_texture_path(line, j + 2), (*i)++, 1);
+	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path))
+		return (cub->east_path = get_texture_path(line, j + 2), (*i)++, 1);
+	return (1);
+}
+
+static int	read_scene_args(t_cub *cub, char **scene)
+{
+	int	i;
+
 	i = 0;
-	while (scene && scene[i])
+	while (scene && scene[i] && !read_scene_map(cub, scene, i))
+		i++;
 	{
-		j = 0;
-		if (ft_isalpha(scene[i][j]) && ft_isalpha(scene[i][j + 1]))
-			read_scene_texture(cub, scene[i])
-		else if (scene[i][j] == 'C' || scene[i][j] == 'F')
-		while (scene[i][j])
-		{
-		}
+		if (!read_scene_color(cub, scene[i], &i))
+			return (free_arrstr(scene), 0);
+		if (!read_scene_texture(cub, scene[i], &i))
+			return (free_arrstr(scene), 0);
+		i++;
 	}
+	return (1);
 }
 
 int	parsing(t_cub *cub, char *path)
@@ -77,4 +142,5 @@ int	parsing(t_cub *cub, char *path)
 		return (0);
 	if (!read_scene_args(cub, scene))
 		return (free(scene), 0);
+	return (1);
 }

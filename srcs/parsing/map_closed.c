@@ -52,11 +52,9 @@ int	is_map_closed(char **map)
 {
 	int	i;
 	int	j;
-	int	is_closed;
 
 	i = 0;
 	j = 0;
-	is_closed = 1;
 	while (map[i])
 	{
 		if (!is_map_line_closed(map[i]))

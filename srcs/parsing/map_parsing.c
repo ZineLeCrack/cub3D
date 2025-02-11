@@ -16,6 +16,34 @@
 
 // can we explore the entire map (full fill)
 
+char		**read_scene_map(char **scene, int i)
+{
+	char	**map;
+	int		j;
+
+	while (scene[i])
+	{
+		if (ft_strlen(scene[i]) != 0)
+			break ;
+		i++;
+	}
+	if (!scene[i])
+		return (ft_printf("parsing error: map is needed\n"), NULL);
+	j = 0;
+	map = malloc(sizeof(char *) * (999));
+	if (!map)
+		return (ft_printf("malloc error\n"), NULL);
+	while (scene[i + j])
+	{
+		map[j] = ft_strdup(scene[i + j]);
+		if (!map[j])
+			return (ft_printf("malloc error\n"), free_arrstr(map), NULL);
+		j++;
+	}
+	map[j] = NULL;
+	return (map);
+}
+
 int	is_map_ok(char **map)
 {
 	if (!is_one_player(map))

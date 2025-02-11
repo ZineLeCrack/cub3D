@@ -12,16 +12,3 @@
 
 #include "../../include/cub3D.h"
 
-static int	generate_color(int r, int g, int b)
-{
-	int	color;
-
-	if (r > 255)
-		r = 255;
-	if (g > 255)
-		g = 255;
-	if (b > 255)
-		b = 255;
-	color = (255 << 24) + (r << 16) + (g << 8) + (b << 0);
-	return (color);
-}

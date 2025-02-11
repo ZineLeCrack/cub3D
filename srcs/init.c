@@ -12,7 +12,7 @@
 
 #include "../include/cub3D.h"
 
-static t_player	init_player_dir(t_player *player, char **map, int i, int j)
+static int	init_player_dir(t_player *player, char **map, int i, int j)
 {
 	player->x = j + 0.5;
 	player->y = i + 0.5;
@@ -24,6 +24,7 @@ static t_player	init_player_dir(t_player *player, char **map, int i, int j)
 		player->dir = create_vector(1, cosf(0), sinf(0));
 	if (map[i][j] == 'O')
 		player->dir = create_vector(1, cosf(0), sinf(0));
+	return (0);
 }
 
 t_player	init_player(t_cub *cub)

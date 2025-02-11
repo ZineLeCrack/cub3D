@@ -25,7 +25,8 @@ int	is_one_player(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'P')
+			if (map[i][j] == 'N' || map[i][j] == 'S'
+				|| map[i][j] == 'O' || map[i][j] == 'E')
 			{
 				if (!player_found)
 					player_found = 1;
