@@ -6,11 +6,32 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:51:09 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 10:43:33 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:04:08 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+int	get_heigth(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	while (cub->map[i])
+		i++;
+	return (i);
+}
+
+int	get_length(t_cub *cub, float y)
+{
+	int	i;
+
+	y = floorf(y);
+	i = 0;
+	while (cub->map[(int)y][i] && cub->map[(int)y][i] != '\n')
+		i++;
+	return (i);
+}
 
 static void	ft_put_decor_around_player(t_cub *cub, char *addr, int infos[3])
 {
@@ -32,7 +53,8 @@ static void	ft_put_decor_around_player(t_cub *cub, char *addr, int infos[3])
 				|| tmp_coo[1] > get_heigth(cub)
 				|| tmp_coo[0] > get_length(cub, tmp_coo[1]))
 				my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
-			else if (cub->map[(int)floorf(tmp_coo[1])][(int)floorf(tmp_coo[0])] == '1')
+			else if (cub->map[(int)floorf(tmp_coo[1])]
+				[(int)floorf(tmp_coo[0])] == '1')
 				my_mlx_pixel_put(addr, mini_coo, 0xC0C0C0, infos);
 			else
 				my_mlx_pixel_put(addr, mini_coo, 0xFFFFFF, infos);

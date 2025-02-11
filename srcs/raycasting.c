@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 12:42:06 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:56:55 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,15 @@ void	draw_column(float *d, int c[2], char *addr, int infos[3])
 	{
 		while (++coo[1] < 900)
 			my_mlx_pixel_put(addr, coo, color, infos);
+		return ;
 	}
-	else
-	{
-		roof_floor = (900 - h);
-		while (++coo[1] < roof_floor * 0.5)
-			my_mlx_pixel_put(addr, coo, 0xC0C0C0, infos);
-		while (++coo[1] < 900 - (roof_floor * 0.5))
-			my_mlx_pixel_put(addr, coo, color, infos);
-		while (++coo[1] < 900)
-			my_mlx_pixel_put(addr, coo, 0xFFFFFF, infos);
-	}
+	roof_floor = (900 - h);
+	while (++coo[1] < roof_floor * 0.5)
+		my_mlx_pixel_put(addr, coo, 0xC0C0C0, infos);
+	while (++coo[1] < 900 - (roof_floor * 0.5))
+		my_mlx_pixel_put(addr, coo, color, infos);
+	while (++coo[1] < 900)
+		my_mlx_pixel_put(addr, coo, 0xFFFFFF, infos);
 }
 
 int	ft_hit_wall(float x, float y, float *step, t_cub *cub)
