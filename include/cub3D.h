@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
-/*   Updated: 2025/02/11 13:00:23 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:53:21 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void		my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3]);
 void		raytracing(t_cub *cub, float angle, int infos[3], char *addr);
 void		draw_column(float *d, int c[2], char *addr, int infos[3]);
 int			ft_hit_wall(float x, float y, float *step, t_cub *cub);
+int			get_dir(float x, float y, float coo[2]);
 
 /* MINIMAP */
 
