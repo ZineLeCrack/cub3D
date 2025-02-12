@@ -6,38 +6,36 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 16:18:24 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:42:24 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-int	get_dir(float x, float y, float a)
+int	get_dir(float x, float y, float coo[2])
 {
-	if (x > 0 && y > 0)
+	static int	tmp = 0;
+
+	if (is_integer(round_to_n_decimals(coo[0], 2))
+		&& is_integer(round_to_n_decimals(coo[1], 2)))
+		return (tmp);
+	if (x > 0)
 	{
-		if (is_integer(round_to_n_decimals(a, 2)))
-			return (2);
-		return (1);
+		if (is_integer(round_to_n_decimals(coo[0], 2)))
+		{
+			if (is_integer(round_to_n_decimals(coo[1], 2)))
+				return (tmp = (y > 0));
+			return (tmp = 2);
+		}
+		return (tmp = (y > 0));
 	}
-	else if (x > 0 && y < 0)
+	if (is_integer(round_to_n_decimals(coo[0], 2)))
 	{
-		if (is_integer(round_to_n_decimals(a, 2)))
-			return (2);
-		return (0);
+		if (is_integer(round_to_n_decimals(coo[1], 2)))
+			return (tmp = (y > 0));
+		return (tmp = 3);
 	}
-	else if (x < 0 && y > 0)
-	{
-		if (is_integer(round_to_n_decimals(a, 2)))
-			return (3);
-		return (1);
-	}
-	else
-	{
-		if (is_integer(round_to_n_decimals(a, 2)))
-			return (3);
-		return (0);
-	}
+	return (tmp = (y > 0));
 }
 
 int	clean_exit(t_cub *cub)

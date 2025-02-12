@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 17:48:50 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:42:17 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 		}
 		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
 				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
-		c[1] = get_dir(step[0], step[1], coo[0]);
+		c[1] = get_dir(step[0], step[1], coo);
 		draw_column(&d, c, addr, infos);
 		c[0]++;
 		angle += ANGLE_STEP;
