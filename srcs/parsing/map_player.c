@@ -20,7 +20,7 @@ int	is_one_player(char **map)
 
 	i = 0;
 	player_found = 0;
-	while (map[i])
+	while (map && map[i])
 	{
 		j = 0;
 		while (map[i][j])
@@ -31,7 +31,7 @@ int	is_one_player(char **map)
 				if (!player_found)
 					player_found = 1;
 				else
-					return (1);
+					return (0);
 			}
 			j++;
 		}

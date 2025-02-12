@@ -85,11 +85,10 @@ int			is_integer(float num);
 /* MAP PARSING */
 
 int			parsing(t_cub *cub, char *path);
-int			is_map_ok(char **map);
-int			is_map_closed(char **map);
-int			flood_fill(char **map);
+int			is_map_ok(t_cub *cub, char **map);
+int			flood_fill(t_cub *cub, char **map);
 int			is_one_player(char **map);
-char		**read_scene_map(char **scene, int i);
+int			read_scene_map(t_cub *cub, char **scene, int i);
 
 /* FREE */
 

@@ -16,7 +16,34 @@
 
 // can we explore the entire map (full fill)
 
-char		**read_scene_map(char **scene, int i)
+static int	does_map_contain_player(char **map)
+{
+	int	number;
+	int	i;
+	int	j;
+
+	number = 0;
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'N' || map[i][j] == 'S'
+				|| map[i][j] == 'O' || map[i][j] == 'E')
+			{
+				number++;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (number != 1)
+		return (0);
+	return (1);
+}
+
+int	read_scene_map(t_cub *cub, char **scene, int i)
 {
 	char	**map;
 	int		j;
@@ -28,30 +55,30 @@ char		**read_scene_map(char **scene, int i)
 		i++;
 	}
 	if (!scene[i])
-		return (ft_printf("parsing error: map is needed\n"), NULL);
+		return (ft_printf("Error\nMap is needed\n"), 0);
 	j = 0;
 	map = malloc(sizeof(char *) * (999));
 	if (!map)
-		return (ft_printf("malloc error\n"), NULL);
+		return (ft_printf("Error\nMalloc failed\n"), clean_exit(cub), 0);
 	while (scene[i + j])
 	{
 		map[j] = ft_strdup(scene[i + j]);
 		if (!map[j])
-			return (ft_printf("malloc error\n"), free_arrstr(map), NULL);
+			return (ft_printf("Error\nMalloc failed\n"), clean_exit(cub),
+				free_arrstr(map), 0);
 		j++;
 	}
 	map[j] = NULL;
-	return (map);
+	return (cub->map = map, 1);
 }
 
-int	is_map_ok(char **map)
+int	is_map_ok(t_cub *cub, char **map)
 {
-	if (!is_one_player(map))
-		return (ft_printf("parsing error: map should contain 1 player\n"), 0);
-	if (!is_map_closed(map))
-		return (ft_printf("parsing error: map has to be closed\n"), 0);
-	if (!flood_fill(map))
-		return (ft_printf("parsing error: every part of \
-			the map has to be accessible\n"), 0);
+	if (!(map))
+		return (ft_printf("Error\nMap should exist\n"), 0);
+	if (!does_map_contain_player(map))
+		return (ft_printf("Error\nMap should contain 1 player\n"), 0);
+	if (!flood_fill(cub, map))
+		return (ft_printf("Error\nMap has to be closed\n"), 0);
 	return (1);
 }

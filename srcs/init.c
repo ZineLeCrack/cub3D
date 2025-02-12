@@ -52,7 +52,7 @@ t_player	init_player(t_cub *cub)
 		}
 		i++;
 	}
-	ft_putstr_fd("error: no one \'P\' found\n", 2);
+	ft_putstr_fd("Error: Map should contain one player\n", 2);
 	return (player.x = -1, player.y = -1, player);
 }
 
@@ -81,6 +81,15 @@ void	init_cub(t_cub *cub, char *path)
 	int	i;
 
 	i = 0;
+	cub->init = NULL;
+	cub->win = NULL;
+	cub->north_path = NULL;
+	cub->south_path = NULL;
+	cub->west_path = NULL;
+	cub->east_path = NULL;
+	cub->c_color = 0;
+	cub->f_color = 0;
+	cub->map = NULL;
 	if (!parsing(cub, path))
 		return ;
 	if (!cub->map)

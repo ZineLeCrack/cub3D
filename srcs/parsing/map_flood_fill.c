@@ -42,67 +42,58 @@ static char	**dup_map(char **map)
 	return (dup);
 }
 
-static void	dfs(char **map, int x, int y)
+static int	dfs(char **map, int x, int y)
 {
 	if (x >= 0 && y >= 0)
 	{
-		if (map && map[x] && map[x][y] && (map[x][y] == '0' || map[x][y] == 'P'))
+		if (!map[x] || !map[x][y] || (map[x][y] != '0' && map[x][y] != '1'
+			&& map[x][y] != 'N' && map[x][y] != 'S' && map[x][y] != 'W'
+			&& map[x][y] != 'E' && map[x][y] != 'V'))
+			return (0);
+		if (map && map[x] && map[x][y]
+			&& (map[x][y] == '0' || map[x][y] == 'S' || map[x][y] == 'N'
+				|| map[x][y] == 'W' || map[x][y] == 'E'))
 		{
 			map[x][y] = 'V';
 			if (x - 1 >= 0)
-				dfs(map, x - 1, y);
+				if (!dfs(map, x - 1, y))
+					return (0);
 			if (y - 1 >= 0)
-				dfs(map, x, y - 1);
-			dfs(map, x + 1, y);
-			dfs(map, x, y + 1);
+				if (!dfs(map, x, y - 1))
+					return (0);
+			if (!dfs(map, x + 1, y))
+				return (0);
+			if (!dfs(map, x, y + 1))
+				return (0);
 		}
-	}
-}
-
-static int	dfs_check(char **map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == '0')
-				return (printf("map[%i, %i] = %c", i, j, map[i][j]), 0);
-			j++;
-		}
-		i++;
 	}
 	return (1);
 }
 
-int	flood_fill(char **map)
+int	flood_fill(t_cub *cub, char **map)
 {
 	char	**dup;
-	int		result;
 	int		i;
 	int		j;
 
 	dup = dup_map(map);
 	if (!dup)
-		return (ft_putstr_fd("error: malloc failed\n", 2),
-			free_arrstr(map), 0);
+		return (ft_putstr_fd("Error\nMalloc failed\n", 2), clean_exit(cub), 0);
 	i = 0;
 	while (dup[i])
 	{
 		j = 0;
 		while (dup[i][j])
 		{
-			if (dup[i][j] == 'P')
-				dfs(dup, i, j);
+			if (dup[i][j] == 'N' || dup[i][j] == 'W'
+				|| dup[i][j] == 'E' || dup[i][j] == 'S')
+				if (!dfs(dup, i, j))
+					return (free_arrstr(dup), 0);
+
 			j++;
 		}
 		i++;
 	}
-	result = dfs_check(dup);
-	free(dup);
-	return (result);
+	free_arrstr(dup);
+	return (1);
 }
