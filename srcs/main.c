@@ -6,11 +6,31 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/11 11:24:29 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:47:24 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+static void	crosshair(char *addr, int infos[3])
+{
+	int	coo[2];
+
+	coo[1] = 448;
+	while (++coo[1] <= 451)
+	{
+		coo[0] = 889;
+		while (++coo[0] <= 910)
+			my_mlx_pixel_put(addr, coo, 0xFF0000, infos);
+	}
+	coo[0] = 898;
+	while (++coo[0] <= 901)
+	{
+		coo[1] = 439;
+		while (++coo[1] <= 460)
+			my_mlx_pixel_put(addr, coo, 0xFF0000, infos);
+	}
+}
 
 int	loop(t_cub *cub)
 {
@@ -25,6 +45,7 @@ int	loop(t_cub *cub)
 	turn_cam(cub);
 	moves(cub);
 	raytracing(cub, angle, img_infos, addr);
+	crosshair(addr, img_infos);
 	mlx_put_image_to_window(cub->init, cub->win, img, 0, 0);
 	draw_minimap(cub, addr, img_infos);
 	mlx_destroy_image(cub->init, img);
