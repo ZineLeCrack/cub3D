@@ -2,7 +2,7 @@ NAME = cub3D
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra #-Werror
 
 MLXFLAGS = -I./minilibx-linux -L./minilibx-linux -lmlx -lXext -lX11 -lm
 
@@ -16,7 +16,10 @@ SRCS = srcs/ft_printf/ft_printf.c srcs/ft_printf/ft_putchar.c srcs/ft_printf/ft_
 	   srcs/libft/ft_lstnew_bonus.c srcs/libft/ft_lstadd_front_bonus.c srcs/libft/ft_lstsize_bonus.c srcs/libft/ft_lstlast_bonus.c \
 	   srcs/libft/ft_lstadd_back_bonus.c srcs/libft/ft_lstdelone_bonus.c srcs/libft/ft_lstclear_bonus.c srcs/libft/ft_lstiter_bonus.c srcs/libft/ft_lstmap_bonus.c \
 	   srcs/get_next_line/get_next_line_utils.c srcs/get_next_line/get_next_line.c \
-	   srcs/init.c srcs/key_press.c srcs/raycasting.c srcs/minimap.c srcs/utils.c srcs/main.c
+	   srcs/init.c srcs/key_press.c srcs/minimap.c srcs/raycasting.c srcs/utils.c srcs/free.c srcs/main.c
+
+## MAP PARSING
+SRCS += srcs/parsing/parsing.c srcs/parsing/map_args.c srcs/parsing/map_parsing.c srcs/parsing/map_flood_fill.c srcs/parsing/map_player.c
 
 OBJS = $(SRCS:.c=.o)
 

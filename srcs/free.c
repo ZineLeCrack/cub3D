@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 13:25:15 by rlebaill          #+#    #+#             */
-/*   Updated: 2024/10/16 16:25:05 by rlebaill         ###   ########.fr       */
+/*   Created: 2025/02/10 16:27:05 by mduvey            #+#    #+#             */
+/*   Updated: 2025/02/10 16:43:04 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/cub3D.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	free_arrstr(char **array)
 {
-	write(fd, &c, 1);
+	int	i;
+
+	i = 0;
+	while (array[i])
+		free(array[i++]);
+	free(array);
 }
 
-/*int main(void)
-{
-    ft_putchar_fd('A', 1);
-    ft_putchar_fd('\n', 1);
-    return (0);
-}*/

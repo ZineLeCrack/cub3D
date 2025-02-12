@@ -4,6 +4,7 @@
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:53:27 by romain            #+#    #+#             */
 /*   Updated: 2025/02/12 19:53:21 by mduvey           ###   ########.fr       */
@@ -46,6 +47,12 @@ typedef struct s_player
 
 typedef struct s_cub
 {
+	char		*north_path;
+	char		*south_path;
+	char		*west_path;
+	char		*east_path;
+	int			f_color;
+	int			c_color;
 	char		**map;
 	void		*init;
 	void		*win;
@@ -87,5 +94,17 @@ int			clean_exit(t_cub *cub);
 t_vector	create_vector(float n, float x, float y);
 float		round_to_n_decimals(float number, int n);
 int			is_integer(float num);
+
+/* MAP PARSING */
+
+int			parsing(t_cub *cub, char *path);
+int			is_map_ok(t_cub *cub, char **map);
+int			flood_fill(t_cub *cub, char **map);
+int			is_one_player(char **map);
+int			read_scene_map(t_cub *cub, char **scene, int i);
+
+/* FREE */
+
+void		free_arrstr(char **array);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 10:42:24 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:58:18 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,36 @@ int	get_dir(float x, float y, float coo[2])
 	return (tmp = (y > 0));
 }
 
+static void	clean_exit_data(t_cub *cub)
+{
+	if (cub->north_path)
+		free(cub->north_path);
+	if (cub->south_path)
+		free(cub->south_path);
+	if (cub->west_path)
+		free(cub->west_path);
+	if (cub->east_path)
+		free(cub->east_path);
+}
+
 int	clean_exit(t_cub *cub)
 {
 	int	i;
 
 	i = 0;
-	while (cub->map[i])
-		free(cub->map[i++]);
-	free(cub->map);
-	mlx_destroy_window(cub->init, cub->win);
-	mlx_destroy_display(cub->init);
-	free(cub->init);
+	clean_exit_data(cub);
+	if (cub->map)
+	{
+		while (cub->map[i])
+			free(cub->map[i++]);
+		free(cub->map);
+	}
+	if (cub->init)
+	{
+		mlx_destroy_window(cub->init, cub->win);
+		mlx_destroy_display(cub->init);
+		free(cub->init);
+	}
 	exit(0);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 10:42:17 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/12 20:08:56 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 	{
 		coo[0] = cub->player.x;
 		coo[1] = cub->player.y;
-		step[0] = cosf(angle) * 0.005;
-		step[1] = sinf(angle) * 0.005;
+		step[0] = cosf(angle) * 0.01;
+		step[1] = sinf(angle) * 0.01;
 		while (!ft_hit_wall(coo[0], coo[1], step, cub))
 		{
 			coo[0] += step[0];

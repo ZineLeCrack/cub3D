@@ -1,6 +1,13 @@
 {
 	"files.associations": {
 		"*.c": "c",
+		"cub3d.h": "c",
+		"__locale": "c"
+	}
+}
+{
+	"files.associations": {
+		"*.c": "c",
 		"cub3d.h": "c"
 	}
 }
