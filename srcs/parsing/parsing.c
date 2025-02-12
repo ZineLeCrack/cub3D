@@ -21,10 +21,10 @@ char	**read_scene(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (ft_putstr_fd("error: failed to open file\n", 2), NULL);
+		return (ft_putstr_fd("failed to open file\n", 2), NULL);
 	scene = malloc(sizeof(char *) * (ft_count_line(path) + 1));
 	if (!scene)
-		return (ft_putstr_fd("error: malloc failed\n", 2), NULL);
+		return (ft_putstr_fd("malloc failed\n", 2), NULL);
 	line = get_next_line(fd);
 	i = 0;
 	while (line)
@@ -45,7 +45,8 @@ static int	generate_color(char *r, char *g, char *b)
 	colors[1] = ft_atoi(g);
 	colors[2] = ft_atoi(b);
 	if (!colors[0] && !colors[1] && !colors[2])
-		return (0);
+		return (ft_putstr_fd("Color argument need to follow \
+			this format <R>,<G>,<B>"), 0);
 	if (colors[0] > 255)
 		colors[0] = 255;
 	if (colors[1] > 255)
@@ -69,7 +70,7 @@ static int	read_scene_color(t_cub *cub, char *line, int *i)
 	{
 		split = ft_split(&(line[j]), ',');
 		if (!split)
-			return (0);
+			return (clean_exit(cub), 0);
 		if (!split[0] || !split[1] || !split[3])
 			return (free_arrstr(split), 0);
 		color = generate_color(split[0], split[1], split[3]);
@@ -84,7 +85,7 @@ static int	read_scene_color(t_cub *cub, char *line, int *i)
 	return (1);
 }
 
-char	*get_texture_path(char *line, int j)
+static char	*get_texture_path(t_cub *cub, char *line, int j)
 {
 	char	*path;
 	int		k;
@@ -94,7 +95,7 @@ char	*get_texture_path(char *line, int j)
 		k++;
 	path = ft_substr(line, j, k - j);
 	if (!path)
-		return (NULL);
+		return (clean_exit(cub), NULL);
 	return (path);
 }
 
@@ -106,13 +107,13 @@ static int	read_scene_texture(t_cub *cub, char *line, int *i)
 	while (line[j] == ' ' || line[j] == '\t')
 		j++;
 	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path))
-		return (cub->north_path = get_texture_path(line, j + 2), (*i)++, 1);
+		return (cub->north_path = get_texture_path(cub, line, j + 2), (*i)++, 1);
 	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path))
-		return (cub->south_path = get_texture_path(line, j + 2), (*i)++, 1);
+		return (cub->south_path = get_texture_path(cub, line, j + 2), (*i)++, 1);
 	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path))
-		return (cub->west_path = get_texture_path(line, j + 2), (*i)++, 1);
+		return (cub->west_path = get_texture_path(cub, line, j + 2), (*i)++, 1);
 	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path))
-		return (cub->east_path = get_texture_path(line, j + 2), (*i)++, 1);
+		return (cub->east_path = get_texture_path(cub, line, j + 2), (*i)++, 1);
 	return (1);
 }
 
@@ -121,15 +122,40 @@ static int	read_scene_args(t_cub *cub, char **scene)
 	int	i;
 
 	i = 0;
-	while (scene && scene[i] && !read_scene_map(cub, scene, i))
+	while (scene && scene[i])
 		i++;
 	{
 		if (!read_scene_color(cub, scene[i], &i))
 			return (free_arrstr(scene), 0);
 		if (!read_scene_texture(cub, scene[i], &i))
 			return (free_arrstr(scene), 0);
+		if (read_scene_map(cub, scene, i))
+			break ;
 		i++;
 	}
+	return (1);
+}
+
+static int	check_missing_args(t_cub *cub)
+{
+	if (!cub->north_path)
+		return (ft_putstr_fd("this argument \
+			is needed \"NO ./path_to_the_north_texture\n\"", 2), 0);
+	if (!cub->south_path)
+		return (ft_putstr_fd("this argument \
+			is needed \"SO ./path_to_the_south_texture\n\"", 2), 0);
+	if (!cub->west_path)
+		return (ft_putstr_fd("this argument \
+			is needed \"WE ./path_to_the_west_texture\n\"", 2), 0);
+	if (!cub->east_path)
+		return (ft_putstr_fd("this argument \
+			is needed \"EA ./path_to_the_east_texture\n\"", 2), 0);
+	if (!cub->f_color)
+		return (ft_putstr_fd("this argument \
+			is needed \"F <R>,<G>,<B>\n\"", 2), 0);
+	if (!cub->c_color)
+		return (ft_putstr_fd("this argument \
+			is needed \"C <R>,<G>,<B>\n\"", 2), 0);
 	return (1);
 }
 
@@ -141,6 +167,10 @@ int	parsing(t_cub *cub, char *path)
 	if (!scene)
 		return (0);
 	if (!read_scene_args(cub, scene))
-		return (free(scene), 0);
+		return (free(scene), ft_putstr_fd("Error\n", 2), 0);
+	if (!check_missing_args(cub))
+		return (free(scene), ft_putstr_fd("Error\n", 2), 0);
+	if (!is_map_ok(cub->map))
+		return (free(scene), ft_putstr_fd("Error\n", 2),  0);
 	return (1);
 }
