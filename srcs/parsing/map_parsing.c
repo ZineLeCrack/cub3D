@@ -12,10 +12,6 @@
 
 #include "../../include/cub3D.h"
 
-// does map only contain valid characters 10P
-
-// can we explore the entire map (full fill)
-
 static int	does_map_contain_player(char **map)
 {
 	int	number;
@@ -30,7 +26,7 @@ static int	does_map_contain_player(char **map)
 		while (map[i][j])
 		{
 			if (map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'O' || map[i][j] == 'E')
+				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
 				number++;
 			}

@@ -167,6 +167,18 @@ static int	check_missing_args(t_cub *cub)
 	return (1);
 }
 
+static t_texture	init_texture(char *path, void *mlx)
+{
+	t_texture	texture;
+	texture.img =  mlx_xpm_file_to_image(mlx, path, &(texture.width),
+		&(texture.height));
+	texture.addr = (int *)mlx_get_data_addr(texture.img, &texture.pixel_bits,
+		&texture.line_size, &texture.endian);
+	if (!texture.img)
+		return (ft_printf("Error\nNo image found for \"%s\"\n", path), texture);
+	return (texture);
+}
+
 int	parsing(t_cub *cub, char *path)
 {
 	char	**scene;
@@ -179,6 +191,18 @@ int	parsing(t_cub *cub, char *path)
 	if (!check_missing_args(cub))
 		return (free_arrstr(scene), clean_exit(cub), 0);
 	if (!is_map_ok(cub, cub->map))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	cub->north_img = init_texture(cub->north_path, cub->init);
+	if (!(cub->north_img.img))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	cub->south_img = init_texture(cub->south_path, cub->init);
+	if (!(cub->south_img.img))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	cub->west_img = init_texture(cub->west_path, cub->init);
+	if (!(cub->west_img.img))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	cub->east_img = init_texture(cub->east_path, cub->init);
+	if (!(cub->east_img.img))
 		return (free_arrstr(scene), clean_exit(cub), 0);
 	return (free_arrstr(scene), 1);
 }

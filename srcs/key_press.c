@@ -6,7 +6,7 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:07:26 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 20:13:05 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/13 10:19:31 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ void	moves(t_cub *cub)
 
 void	turn_cam(t_cub *cub)
 {
-	static float	angle = -M_PI / 2;
+	float	angle;
 
+	angle = atan2f(cub->player.dir.y, cub->player.dir.x);
 	if (cub->keys[65363] == 1)
 	{
 		angle += M_PI / 45;
