@@ -55,6 +55,8 @@ static int	dfs(char **map, int x, int y)
 				|| map[x][y] == 'W' || map[x][y] == 'E'))
 		{
 			map[x][y] = 'V';
+			if (x == 0 || y == 0)
+				return (0);
 			if (x - 1 >= 0)
 				if (!dfs(map, x - 1, y))
 					return (0);
@@ -89,7 +91,6 @@ int	flood_fill(t_cub *cub, char **map)
 				|| dup[i][j] == 'E' || dup[i][j] == 'S')
 				if (!dfs(dup, i, j))
 					return (free_arrstr(dup), 0);
-
 			j++;
 		}
 		i++;

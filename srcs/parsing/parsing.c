@@ -55,8 +55,8 @@ static int	generate_color(char *r, char *g, char *b)
 		colors[1] = 255;
 	if (colors[2] > 255)
 		colors[2] = 255;
-	return (255 << 24) + (colors[0] << 16) +
-		(colors[1] << 8) + (colors[2] << 0);
+	return ((255 << 24) + (colors[0] << 16)
+		+ (colors[1] << 8) + (colors[2] << 0));
 }
 
 static int	read_scene_color(t_cub *cub, char *line, int *is_parsing)

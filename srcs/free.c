@@ -21,4 +21,3 @@ void	free_arrstr(char **array)
 		free(array[i++]);
 	free(array);
 }
-
