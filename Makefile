@@ -19,7 +19,7 @@ SRCS = srcs/ft_printf/ft_printf.c srcs/ft_printf/ft_putchar.c srcs/ft_printf/ft_
 	   srcs/init.c srcs/key_press.c srcs/minimap.c srcs/raycasting.c srcs/utils.c srcs/free.c srcs/main.c
 
 ## MAP PARSING
-SRCS += srcs/parsing/parsing.c srcs/parsing/map_args.c srcs/parsing/map_parsing.c srcs/parsing/map_flood_fill.c srcs/parsing/map_player.c
+SRCS += srcs/parsing/parsing.c srcs/parsing/map_parsing.c srcs/parsing/map_flood_fill.c srcs/parsing/map_player.c
 
 OBJS = $(SRCS:.c=.o)
 

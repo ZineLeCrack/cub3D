@@ -6,7 +6,7 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/13 17:46:08 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/14 12:10:54 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void	draw_column(float *d, int c[3], char *addr, int infos[3],
 	int	height = cub->north_img.height;
 	while (++coo[1] < 900 - (roof_floor * 0.5))
 	{
-		int	col = (int)((float)width / place_hit);
-		int	line = (int)((float)width / (coo[1] * 900));
+		int	col = 1;
+		int line = 1;
 		int index = col * line;
-		my_mlx_pixel_put(addr, coo, cub->north_img.img[index], infos);
+		my_mlx_pixel_put(addr, coo, cub->north_img.addr[index], infos);
 	}
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(addr, coo, c[2], infos);

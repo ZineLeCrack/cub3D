@@ -1,7 +1,7 @@
-NO ./pictures/ane.xpm
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO ./pictures/shrek.xpm
+SO ./pictures/ane.xpm
+WE ./pictures/pupuce.xpm
+EA ./pictures/shrek.xpm
 
 F 220,100,0
 C 225,100,234

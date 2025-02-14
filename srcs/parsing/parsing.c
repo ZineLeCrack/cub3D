@@ -99,7 +99,7 @@ static char	*get_text(t_cub *cub, char *line, int j)
 	k = j;
 	while (line[k] && line[k] != '\n' && line[k] != ' ' && line[k] != '\t')
 		k++;
-	path = ft_substr(line, j, k - j);
+	path = ft_substr(line, j, k - j - 1);
 	if (!path)
 		return (clean_exit(cub), NULL);
 	return (path);
@@ -170,12 +170,14 @@ static int	check_missing_args(t_cub *cub)
 static t_texture	init_texture(char *path, void *mlx)
 {
 	t_texture	texture;
+
 	texture.img =  mlx_xpm_file_to_image(mlx, path, &(texture.width),
 		&(texture.height));
-	texture.addr = (int *)mlx_get_data_addr(texture.img, &texture.pixel_bits,
-		&texture.line_size, &texture.endian);
 	if (!texture.img)
-		return (ft_printf("Error\nNo image found for \"%s\"\n", path), texture);
+		return (ft_printf("Error\nNo image found for |--%s--|\n", path), texture);
+	texture.addr = mlx_get_data_addr(texture.img, &texture.pixel_bits,
+		&texture.line_size, &texture.endian);
+	printf("%c\n", texture.addr[0]);
 	return (texture);
 }
 

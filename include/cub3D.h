@@ -53,7 +53,7 @@ typedef struct s_texture
 	int		pixel_bits;
 	int		line_size;
 	int		endian;
-	int		*addr;
+	char	*addr;
 }	t_texture;
 
 typedef struct s_cub
