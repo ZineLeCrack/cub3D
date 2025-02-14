@@ -6,7 +6,7 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/14 12:10:54 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/14 13:13:55 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,15 @@ void	draw_column(float *d, int c[3], char *addr, int infos[3],
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
 		my_mlx_pixel_put(addr, coo, c[3], infos);
-	int	width = cub->north_img.width;
-	int	height = cub->north_img.height;
+	int		width = cub->north_img.width;
+	int		line = 0;
+	int		height = cub->north_img.height;
+	int	step = height / h;
+	int	col = (int)((float)width * place_hit);
 	while (++coo[1] < 900 - (roof_floor * 0.5))
 	{
-		int	col = 1;
-		int line = 1;
-		int index = col * line;
+		line += step;
+		int index = (line * width) + col;
 		my_mlx_pixel_put(addr, coo, cub->north_img.addr[index], infos);
 	}
 	while (++coo[1] < 900)
@@ -66,24 +68,24 @@ float	ft_hit_wall(float x, float y, float *step, t_cub *cub)
 		if (step[1] > 0)
 		{
 			if (cub->map[(int)round_to_n_decimals(y, 2)][(int)floorf(x)] == '1')
-				return (fmod(y, 1.0));
+				return (fmod(x, 1.0));
 		}
 		else if (step[1] < 0)
 			if (cub->map[(int)round_to_n_decimals(y, 2) - 1][(int)floorf(x)]
 				== '1')
-				return (fmod(y, 1.0));
+				return (fmod(x, 1.0));
 	}
 	if (is_integer(round_to_n_decimals(x, 2)))
 	{
 		if (step[0] > 0)
 		{
 			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2)] == '1')
-				return (fmod(x, 1.0));
+				return (fmod(y, 1.0));
 		}
 		else if (step[0] < 0)
 			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2) - 1]
 				== '1')
-				return (fmod(x, 1.0));
+				return (fmod(y, 1.0));
 	}
 	return (-1);
 }
