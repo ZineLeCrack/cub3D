@@ -170,7 +170,12 @@ static int	check_missing_args(t_cub *cub)
 int	parsing(t_cub *cub, char *path)
 {
 	char	**scene;
+	size_t	len;
 
+	len = ft_strlen(path);
+	if (len < 4 || path[len - 1] != 'b' || path[len - 2] != 'u'
+		|| path[len - 3] != 'c' || path[len - 4] != '.')
+	return (ft_putstr_fd("Error\nThe <map path> must finish by \".cub\"\n", 2), 0);
 	scene = read_scene(cub, path);
 	if (!scene)
 		return (0);

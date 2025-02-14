@@ -57,12 +57,25 @@ static int	dfs(char **map, int x, int y)
 			map[x][y] = 'V';
 			if (x == 0 || y == 0)
 				return (0);
+			if (x - 1 >= 0 && y - 1 >= 0)
+				if (!dfs(map, x - 1, y - 1))
+					return (0);
 			if (x - 1 >= 0)
+			{
 				if (!dfs(map, x - 1, y))
 					return (0);
+				if (!dfs(map, x - 1, y + 1))
+					return (0);
+			}
 			if (y - 1 >= 0)
+			{
 				if (!dfs(map, x, y - 1))
 					return (0);
+				if (!dfs(map, x + 1, y - 1))
+					return (0);
+			}
+			if (!dfs(map, x + 1, y + 1))
+				return (0);
 			if (!dfs(map, x + 1, y))
 				return (0);
 			if (!dfs(map, x, y + 1))
