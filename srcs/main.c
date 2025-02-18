@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 08:51:45 by romain            #+#    #+#             */
-/*   Updated: 2025/02/14 11:14:34 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:55:52 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	loop(t_cub *cub)
 	addr = mlx_get_data_addr(img, &img_infos[0], &img_infos[1], &img_infos[2]);
 	turn_cam(cub);
 	moves(cub);
-	raytracing(cub, angle, img_infos, addr);
+	raycasting(cub, angle, img_infos, addr);
 	crosshair(addr, img_infos);
 	mlx_put_image_to_window(cub->init, cub->win, img, 0, 0);
 	draw_minimap(cub, addr, img_infos);

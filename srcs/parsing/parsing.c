@@ -177,7 +177,6 @@ static t_texture	init_texture(char *path, void *mlx)
 		return (ft_printf("Error\nNo image found for |--%s--|\n", path), texture);
 	texture.addr = mlx_get_data_addr(texture.img, &texture.pixel_bits,
 		&texture.line_size, &texture.endian);
-	printf("%c\n", texture.addr[0]);
 	return (texture);
 }
 
