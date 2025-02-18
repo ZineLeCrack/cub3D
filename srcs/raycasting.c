@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/18 18:23:21 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:47:10 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,17 @@ char	*put_img_infos(int dir, int *w, int *h, t_cub *cub)
 	}
 }
 
-void	draw_column(float *d, int c[4], char *addr, int infos[3],
+void	draw_column(float *d, int c[2], char *addr, int infos[3],
 	float place_hit, t_cub *cub)
 {
 	int		h;
+	int		index;
 	int		roof_floor;
 	int		color;
 	int		coo[2];
 	int		column;
 	int		img_size[2];
+	int		texY;
 	char	*img_addr;
 	float	step;
 	float	line;
@@ -68,11 +70,14 @@ void	draw_column(float *d, int c[4], char *addr, int infos[3],
 	coo[0] = c[0];
 	coo[1] = -1;
 	if (h < 0 || h >= 900)
+	{
 		while (++coo[1] < 900)
 			my_mlx_pixel_put(addr, coo, 0xFF0000, infos);
+		return ;
+	}
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
-		my_mlx_pixel_put(addr, coo, c[3], infos);
+		my_mlx_pixel_put(addr, coo, cub->f_color, infos);
 	column = (int)(place_hit * img_size[0]);
 	if (column < 0)
 		column = 0;
@@ -82,10 +87,12 @@ void	draw_column(float *d, int c[4], char *addr, int infos[3],
 	step = (float)img_size[1] / (float)h;
 	while (++coo[1] < 900 - (roof_floor * 0.5))
 	{
-		int texY = (int)line;
-		if (texY < 0) texY = 0;
-		if (texY >= img_size[1]) texY = img_size[1] - 1;
-		int index = (texY * img_size[0] * 4) + column * 4; // if (index < 0 || index >= width * height) continue;
+		texY = (int)line;
+		if (texY < 0)
+			texY = 0;
+		if (texY >= img_size[1])
+			texY = img_size[1] - 1;
+		index = (texY * img_size[0] * 4) + column * 4; // if (index < 0 || index >= width * height) continue;
 		color = (img_addr[index] & 0xFF)
 				| ((img_addr[index + 1] & 0xFF) << 8)
 				| ((img_addr[index + 2] & 0xFF) << 16);
@@ -93,7 +100,7 @@ void	draw_column(float *d, int c[4], char *addr, int infos[3],
 		line += step;
 	}
 	while (++coo[1] < 900)
-		my_mlx_pixel_put(addr, coo, c[2], infos);
+		my_mlx_pixel_put(addr, coo, cub->c_color, infos);
 }
 
 
@@ -128,7 +135,7 @@ float	ft_hit_wall(float x, float y, float *step, t_cub *cub)
 
 void	raycasting(t_cub *cub, float angle, int infos[3], char *addr)
 {
-	int		c[4];
+	int		c[2];
 	float	d;
 	float	step[2];
 	float	coo[2];
@@ -153,8 +160,6 @@ void	raycasting(t_cub *cub, float angle, int infos[3], char *addr)
 				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)))
 				* cosf(angle - atan2f(cub->player.dir.y, cub->player.dir.x));
 		c[1] = get_dir(step[0], step[1], coo);
-		c[2] = cub->c_color;
-		c[3] = cub->f_color;
 		draw_column(&d, c, addr, infos, place_hit, cub);
 		c[0]++;
 		angle += ANGLE_STEP;
