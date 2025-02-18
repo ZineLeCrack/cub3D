@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/14 17:43:10 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:47:35 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,21 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 	*(unsigned int *)dst = color;
 }
 
-void	draw_column(float *d, int c[3], char *addr, int infos[3],
+void	draw_column(float *d, int c[4], char *addr, int infos[3],
 	float place_hit, t_cub *cub)
 {
 	int	h;
 	int	roof_floor;
-	int	color[4];
+	int	color;
 	int	coo[2];
 
-	color[0] = 0x000000;
-	color[1] = 0x303030;
-	color[2] = 0x606060;
-	color[3] = 0x909090;
 	h = (int)roundf(900 / *d);
 	coo[0] = c[0];
 	coo[1] = -1;
 
+	if (h < 0 || h >= 900)
+		while (++coo[1] < 900)
+			my_mlx_pixel_put(addr, coo, 0xFF0000, infos);
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
 		my_mlx_pixel_put(addr, coo, c[3], infos);
@@ -57,11 +56,14 @@ void	draw_column(float *d, int c[3], char *addr, int infos[3],
 		int texY = (int)line;
 		if (texY < 0) texY = 0;
 		if (texY >= height) texY = height - 1;
-		int index = (texY * width) + collumn;
-		if (index < 0 || index >= width * height) continue;
-
-		my_mlx_pixel_put(addr, coo, cub->north_img.addr[index], infos);
-
+		int index = (texY * width * 4) + collumn * 4;
+		// if (index < 0 || index >= width * height) continue;
+		// printf("h = %d, y = %d, collumn = %d, line = %f, step = %f, index = %d\n",
+		// h, coo[0], collumn, line, step, index);
+		color = (cub->north_img.addr[index] & 0xFF)
+				| ((cub->north_img.addr[index + 1] & 0xFF) << 8)
+				| ((cub->north_img.addr[index + 2] & 0xFF) << 16);
+		my_mlx_pixel_put(addr, coo, color, infos);
 		line += step;
 	}
 
@@ -123,7 +125,8 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 			coo[1] += step[1];
 		}
 		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
-				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
+				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)))
+				* cosf(angle - atan2f(cub->player.dir.y, cub->player.dir.x));
 		c[1] = get_dir(step[0], step[1], coo);
 		c[2] = cub->c_color;
 		c[3] = cub->f_color;
