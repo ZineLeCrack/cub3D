@@ -45,12 +45,27 @@ typedef struct s_player
 	t_vector	lseg;
 }	t_player;
 
+typedef struct s_texture
+{
+	int		width;
+	int		height;
+	void	*img;
+	int		pixel_bits;
+	int		line_size;
+	int		endian;
+	char	*addr;
+}	t_texture;
+
 typedef struct s_cub
 {
 	char		*north_path;
 	char		*south_path;
 	char		*west_path;
 	char		*east_path;
+	t_texture	north_img;
+	t_texture	south_img;
+	t_texture	west_img;
+	t_texture	east_img;
 	int			f_color;
 	int			c_color;
 	char		**map;
@@ -78,8 +93,8 @@ int			key_press(int key, t_cub *cub);
 
 void		my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3]);
 void		raytracing(t_cub *cub, float angle, int infos[3], char *addr);
-void		draw_column(float *d, int c[2], char *addr, int infos[3]);
-int			ft_hit_wall(float x, float y, float *step, t_cub *cub);
+void		draw_column(float *d, int c[2], char *addr, int infos[3], /*float place_hit,*/ t_cub *cub);
+float		ft_hit_wall(float x, float y, float *step, t_cub *cub);
 int			get_dir(float x, float y, float coo[2]);
 
 /* MINIMAP */

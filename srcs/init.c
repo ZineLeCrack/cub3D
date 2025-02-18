@@ -6,7 +6,7 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 19:59:54 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/13 18:41:17 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static int	init_player_dir(t_player *player, char **map, int i, int j)
 	player->x = j + 0.5;
 	player->y = i + 0.5;
 	if (map[i][j] == 'N')
-		player->dir = create_vector(1, cosf(0), sinf(0));
+		player->dir = create_vector(1, cosf(-M_PI / 2), sinf(-M_PI / 2));
+	if (map[i][j] == 'W')
+		player->dir = create_vector(1, cosf(M_PI), sinf(M_PI));
 	if (map[i][j] == 'E')
 		player->dir = create_vector(1, cosf(0), sinf(0));
 	if (map[i][j] == 'S')
-		player->dir = create_vector(1, cosf(0), sinf(0));
-	if (map[i][j] == 'O')
-		player->dir = create_vector(1, cosf(0), sinf(0));
+		player->dir = create_vector(1, cosf(M_PI / 2), sinf(M_PI / 2));
 	return (0);
 }
 
@@ -43,7 +43,7 @@ t_player	init_player(t_cub *cub)
 		while (cub->map[i][j])
 		{
 			if (cub->map[i][j] == 'N' || cub->map[i][j] == 'S'
-				|| cub->map[i][j] == 'O' || cub->map[i][j] == 'E')
+				|| cub->map[i][j] == 'W' || cub->map[i][j] == 'E')
 			{
 				init_player_dir(&player, cub->map, i, j);
 				return (player);
@@ -93,6 +93,8 @@ void	init_cub(t_cub *cub, char *path)
 	cub->c_color = 0;
 	cub->f_color = 0;
 	cub->map = NULL;
+	cub->init = mlx_init();
+	cub->win = mlx_new_window(cub->init, 1800, 900, "cub3D");
 	if (!parsing(cub, path))
 		return ;
 	if (!cub->map)
@@ -105,6 +107,4 @@ void	init_cub(t_cub *cub, char *path)
 		free(cub->map);
 		return ;
 	}
-	cub->init = mlx_init();
-	cub->win = mlx_new_window(cub->init, 1800, 900, "cub3D");
 }

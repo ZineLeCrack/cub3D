@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 20:08:56 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/14 12:29:43 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 	*(unsigned int *)dst = color;
 }
 
-void	draw_column(float *d, int c[3], char *addr, int infos[3])
+void	draw_column(float *d, int c[3], char *addr, int infos[3],
+	/*float place_hit, */t_cub *cub)
 {
 	int	h;
 	int	roof_floor;
@@ -44,48 +45,56 @@ void	draw_column(float *d, int c[3], char *addr, int infos[3])
 	}
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
-		my_mlx_pixel_put(addr, coo, 0xC0C0C0, infos);
+		my_mlx_pixel_put(addr, coo, c[3], infos);
+	// int	width = cub->north_img.width;
+	// int	height = cub->north_img.height;
 	while (++coo[1] < 900 - (roof_floor * 0.5))
-		my_mlx_pixel_put(addr, coo, color[c[1]], infos);
+	{
+		int	col = 1;
+		int line = 1;
+		int index = col * line;
+		my_mlx_pixel_put(addr, coo, cub->north_img.addr[index], infos);
+	}
 	while (++coo[1] < 900)
-		my_mlx_pixel_put(addr, coo, 0xFFFFFF, infos);
+		my_mlx_pixel_put(addr, coo, c[2], infos);
 }
 
-int	ft_hit_wall(float x, float y, float *step, t_cub *cub)
+float	ft_hit_wall(float x, float y, float *step, t_cub *cub)
 {
 	if (is_integer(round_to_n_decimals(y, 2)))
 	{
 		if (step[1] > 0)
 		{
 			if (cub->map[(int)round_to_n_decimals(y, 2)][(int)floorf(x)] == '1')
-				return (1);
+				return (fmod(y, 1.0));
 		}
 		else if (step[1] < 0)
 			if (cub->map[(int)round_to_n_decimals(y, 2) - 1][(int)floorf(x)]
 				== '1')
-				return (1);
+				return (fmod(y, 1.0));
 	}
 	if (is_integer(round_to_n_decimals(x, 2)))
 	{
 		if (step[0] > 0)
 		{
 			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2)] == '1')
-				return (1);
+				return (fmod(x, 1.0));
 		}
 		else if (step[0] < 0)
 			if (cub->map[(int)floorf(y)][(int)round_to_n_decimals(x, 2) - 1]
 				== '1')
-				return (1);
+				return (fmod(x, 1.0));
 	}
-	return (0);
+	return (-1);
 }
 
 void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 {
-	int		c[2];
+	int		c[4];
 	float	d;
 	float	step[2];
 	float	coo[2];
+	float	place_hit;
 
 	c[0] = 0;
 	while (c[0] < 1800)
@@ -94,15 +103,20 @@ void	raytracing(t_cub *cub, float angle, int infos[3], char *addr)
 		coo[1] = cub->player.y;
 		step[0] = cosf(angle) * 0.01;
 		step[1] = sinf(angle) * 0.01;
-		while (!ft_hit_wall(coo[0], coo[1], step, cub))
+		while (1)
 		{
+			place_hit = ft_hit_wall(coo[0], coo[1], step, cub);
+			if (place_hit != -1)
+				break ;
 			coo[0] += step[0];
 			coo[1] += step[1];
 		}
 		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
 				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)));
 		c[1] = get_dir(step[0], step[1], coo);
-		draw_column(&d, c, addr, infos);
+		c[2] = cub->c_color;
+		c[3] = cub->f_color;
+		draw_column(&d, c, addr, infos, /*place_hit,*/ cub);
 		c[0]++;
 		angle += ANGLE_STEP;
 	}
