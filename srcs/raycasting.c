@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/18 17:56:25 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:23:21 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,49 +22,76 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 	*(unsigned int *)dst = color;
 }
 
+char	*put_img_infos(int dir, int *w, int *h, t_cub *cub)
+{
+	if (dir == 0)
+	{
+		*w = cub->north_img.width;
+		*h = cub->north_img.height;
+		return (cub->north_img.addr);
+	}
+	if (dir == 1)
+	{
+		*w = cub->south_img.width;
+		*h = cub->south_img.height;
+		return (cub->south_img.addr);
+	}
+	if (dir == 2)
+	{
+		*w = cub->east_img.width;
+		*h = cub->east_img.height;
+		return (cub->east_img.addr);
+	}
+	else
+	{
+		*w = cub->west_img.width;
+		*h = cub->west_img.height;
+		return (cub->west_img.addr);
+	}
+}
+
 void	draw_column(float *d, int c[4], char *addr, int infos[3],
 	float place_hit, t_cub *cub)
 {
-	int	h;
-	int	roof_floor;
-	int	color;
-	int	coo[2];
+	int		h;
+	int		roof_floor;
+	int		color;
+	int		coo[2];
+	int		column;
+	int		img_size[2];
+	char	*img_addr;
+	float	step;
+	float	line;
 
+	img_addr = put_img_infos(c[1], &img_size[0], &img_size[1], cub);
 	h = (int)roundf(900 / *d);
 	coo[0] = c[0];
 	coo[1] = -1;
-
 	if (h < 0 || h >= 900)
 		while (++coo[1] < 900)
 			my_mlx_pixel_put(addr, coo, 0xFF0000, infos);
 	roof_floor = (900 - h);
 	while (++coo[1] < roof_floor * 0.5)
 		my_mlx_pixel_put(addr, coo, c[3], infos);
-
-	int	width = cub->north_img.width;
-	int	height = cub->north_img.height;
-
-	int collumn = (int)(place_hit * width);
-	if (collumn < 0) collumn = 0;
-	if (collumn >= width) collumn = width - 1;
-
-	float line = 0.0;
-	float step = (float)height / (float)h;
-
+	column = (int)(place_hit * img_size[0]);
+	if (column < 0)
+		column = 0;
+	if (column >= img_size[0])
+		column = img_size[0] - 1;
+	line = 0.0;
+	step = (float)img_size[1] / (float)h;
 	while (++coo[1] < 900 - (roof_floor * 0.5))
 	{
 		int texY = (int)line;
 		if (texY < 0) texY = 0;
-		if (texY >= height) texY = height - 1;
-		int index = (texY * width * 4) + collumn * 4;
-		// if (index < 0 || index >= width * height) continue;
-		color = (cub->north_img.addr[index] & 0xFF)
-				| ((cub->north_img.addr[index + 1] & 0xFF) << 8)
-				| ((cub->north_img.addr[index + 2] & 0xFF) << 16);
+		if (texY >= img_size[1]) texY = img_size[1] - 1;
+		int index = (texY * img_size[0] * 4) + column * 4; // if (index < 0 || index >= width * height) continue;
+		color = (img_addr[index] & 0xFF)
+				| ((img_addr[index + 1] & 0xFF) << 8)
+				| ((img_addr[index + 2] & 0xFF) << 16);
 		my_mlx_pixel_put(addr, coo, color, infos);
 		line += step;
 	}
-
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(addr, coo, c[2], infos);
 }
