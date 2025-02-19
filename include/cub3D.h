@@ -100,10 +100,10 @@ float		ft_hit_wall(float x, float y, float *step, t_cub *cub);
 int			get_dir(float x, float y, float coo[2]);
 float		ft_find_place_hit(t_cub *cub, float *x, float *y, float step[2]);
 int			ft_find_color(char *img_addr, int index);
-int			ft_find_index(float *line, int img_size[2], int column, float step);
-int			ft_find_column(float place_hit, int img_size[2]);
-void		ft_draw_column_when_close(t_cub *cub, char *img_addr,
-			int img_size[2], int h, int coo[2]);
+int			ft_find_index(float *line, t_texture *img, int column, float step);
+int			ft_find_column(float place_hit, t_texture *img);
+void		ft_draw_column_when_close(t_cub *cub, t_texture *img,
+				int h, int coo[2]);
 
 /* MINIMAP */
 

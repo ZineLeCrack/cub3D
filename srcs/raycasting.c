@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 18:24:26 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:49:29 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,62 +22,51 @@ void	my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3])
 	*(unsigned int *)dst = color;
 }
 
-char	*put_img_infos(int dir, int *w, int *h, t_cub *cub)
+t_texture	*put_img_infos(int dir, t_cub *cub)
 {
 	if (dir == 0)
 	{
-		*w = cub->north_img.width;
-		*h = cub->north_img.height;
-		return (cub->north_img.addr);
+		return (&cub->north_img);
 	}
 	if (dir == 1)
 	{
-		*w = cub->south_img.width;
-		*h = cub->south_img.height;
-		return (cub->south_img.addr);
+		return (&cub->south_img);
 	}
 	if (dir == 2)
 	{
-		*w = cub->east_img.width;
-		*h = cub->east_img.height;
-		return (cub->east_img.addr);
+		return (&cub->east_img);
 	}
 	else
 	{
-		*w = cub->west_img.width;
-		*h = cub->west_img.height;
-		return (cub->west_img.addr);
+		return (&cub->west_img);
 	}
 }
 
 void	draw_column(float *d, int c[2],	float place_hit, t_cub *cub)
 {
-	int		h;
-	int		roof_floor;
-	int		coo[2];
-	int		img_size[2];
-	char	*img_addr;
-	float	step;
-	float	line;
+	int			h[2];
+	int			coo[2];
+	t_texture	*img;
+	float		step;
+	float		line;
 
-	img_addr = put_img_infos(c[1], &img_size[0], &img_size[1], cub);
-	h = (int)roundf(900 / *d);
-	if (h < 0)
-		h = 0;
+	img = put_img_infos(c[1], cub);
+	h[0] = (int)roundf(900 / *d);
+	if (h[0] < 0)
+		h[0] = 0;
 	coo[0] = c[0];
 	coo[1] = -1;
-	if (h >= 900)
-		ft_draw_column_when_close(cub, img_addr, img_size, h, coo);
-	roof_floor = (900 - h) * 0.5;
-	while (++coo[1] < roof_floor)
+	if (h[0] >= 900)
+		ft_draw_column_when_close(cub, img, h[0], coo);
+	h[1] = (900 - h[0]) * 0.5;
+	while (++coo[1] < h[1])
 		my_mlx_pixel_put(cub->addr, coo, cub->f_color, cub->infos);
 	line = 0.0;
-	step = (float)img_size[1] / (float)h;
-	while (++coo[1] < 900 - roof_floor)
-		my_mlx_pixel_put(cub->addr, coo,
-			ft_find_color(img_addr,
-				ft_find_index(&line, img_size,
-					ft_find_column(place_hit, img_size), step)), cub->infos);
+	step = (float)img->width / (float)h[0];
+	while (++coo[1] < 900 - h[1])
+		my_mlx_pixel_put(cub->addr, coo, ft_find_color(img->addr,
+				ft_find_index(&line, img,
+					ft_find_column(place_hit, img), step)), cub->infos);
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(cub->addr, coo, cub->c_color, cub->infos);
 }

@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:22:37 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 18:24:32 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:44:32 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,35 @@ int	ft_find_color(char *img_addr, int index)
 		| ((img_addr[index + 2] & 0xFF) << 16));
 }
 
-int	ft_find_index(float *line, int img_size[2], int column, float step)
+int	ft_find_index(float *line, t_texture *img, int column, float step)
 {
 	int	texy;
 
 	texy = (int)(*line);
 	if (texy < 0)
 		texy = 0;
-	if (texy >= img_size[1])
-		texy = img_size[1] - 1;
+	if (texy >= img->height)
+		texy = img->height - 1;
 	*line += step;
-	return ((texy * img_size[0] * 4) + column * 4);
+	return ((texy * img->width * 4) + column * 4);
 }
 
-int	ft_find_column(float place_hit, int img_size[2])
+int	ft_find_column(float place_hit, t_texture *img)
 {
 	int	column;
 
-	column = (int)(place_hit * img_size[0]);
+	column = (int)(place_hit * img->width);
 	if (column < 0)
 		column = 0;
-	if (column >= img_size[0])
-		column = img_size[0] - 1;
+	if (column >= img->width)
+		column = img->width - 1;
 	return (column);
 }
 
-void	ft_draw_column_when_close(t_cub *cub, char *img_addr,
-			int img_size[2], int h, int coo[2])
+void	ft_draw_column_when_close(t_cub *cub, t_texture *img,
+			int h, int coo[2])
 {
-	(void)img_addr;
-	(void)img_size;
+	(void)img;
 	(void)h;
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(cub->addr, coo, 0xFF0000, cub->infos);
