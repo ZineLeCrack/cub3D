@@ -103,7 +103,7 @@ int			ft_find_color(char *img_addr, int index);
 int			ft_find_index(float *line, t_texture *img, int column, float step);
 int			ft_find_column(float place_hit, t_texture *img);
 void		ft_draw_column_when_close(t_cub *cub, t_texture *img,
-				int h, int coo[2]);
+				int h, int coo[2], float place_hit);
 
 /* MINIMAP */
 

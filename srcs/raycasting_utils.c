@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:22:37 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 18:44:32 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:50:45 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,24 @@ int	ft_find_column(float place_hit, t_texture *img)
 }
 
 void	ft_draw_column_when_close(t_cub *cub, t_texture *img,
-			int h, int coo[2])
+			int h, int coo[2], float place_hit)
 {
-	(void)img;
-	(void)h;
-	while (++coo[1] < 900)
-		my_mlx_pixel_put(cub->addr, coo, 0xFF0000, cub->infos);
-	return ;
+	float	step;
+	float	coef;
+	int		begin;
+	float	line;
+	int		column;
+	
+	column = ft_find_column(place_hit, img);
+	coef = 900 / (float)h;
+	begin = (int)((1 - coef) / 2 * img->height);
+	step = (coef * img->height) / 900;
+	line = begin;
+	while (coo[1] < 900)
+	{
+		my_mlx_pixel_put(cub->addr, coo,
+			ft_find_color(img->addr,
+				ft_find_index(&line, img, column, step)), cub->infos);
+		coo[1]++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 18:49:29 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:37:23 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_column(float *d, int c[2],	float place_hit, t_cub *cub)
 	coo[0] = c[0];
 	coo[1] = -1;
 	if (h[0] >= 900)
-		ft_draw_column_when_close(cub, img, h[0], coo);
+		ft_draw_column_when_close(cub, img, h[0], coo, place_hit);
 	h[1] = (900 - h[0]) * 0.5;
 	while (++coo[1] < h[1])
 		my_mlx_pixel_put(cub->addr, coo, cub->f_color, cub->infos);

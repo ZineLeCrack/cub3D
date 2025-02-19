@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:51:09 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 17:23:07 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:11:34 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ static void	ft_put_decor_around_player(t_cub *cub, char *addr, int infos[3])
 void	draw_minimap(t_cub *cub, char *addr, int infos[3])
 {
 	int		px_coo[2];
-	float	player_coo[2];
 
-	player_coo[0] = cub->player.x;
-	player_coo[1] = cub->player.y;
 	ft_put_decor_around_player(cub, addr, infos);
 	px_coo[1] = 147;
 	while (++px_coo[1] < 153)
