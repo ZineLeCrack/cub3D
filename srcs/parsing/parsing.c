@@ -12,34 +12,7 @@
 
 #include "../../include/cub3D.h"
 
-char	**read_scene(t_cub *cub, char *path)
-{
-	char	**scene;
-	char	*line;
-	int		fd;
-	int		i;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ft_putstr_fd("Error\nfailed to open file\n", 2), NULL);
-	scene = malloc(sizeof(char *) * (ft_count_line(path) + 1));
-	if (!scene)
-		return (ft_putstr_fd("Error\nmalloc failed\n", 2), clean_exit(cub),
-			close(fd), NULL);
-	i = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		scene[i] = line;
-		i++;
-	}
-	scene[i] = NULL;
-	return (close(fd), scene);
-}
-
-static int	generate_color(char *r, char *g, char *b)
+int	generate_color(char *r, char *g, char *b)
 {
 	int	colors[3];
 
@@ -57,97 +30,6 @@ this format <R>,<G>,<B>\n", 2), 0);
 		colors[2] = 255;
 	return ((255 << 24) + (colors[0] << 16)
 		+ (colors[1] << 8) + (colors[2] << 0));
-}
-
-static int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
-{
-	int		j;
-	char	**split;
-	int		color;
-
-	j = 0;
-	while (line[j] == ' ' || line[j] == '\t')
-		j++;
-	if ((line[j] == 'C' || line[j] == 'F')
-		&& (line[j + 1] == ' ' || line[j + 1] == '\t'))
-	{
-		split = ft_split(&(line[j + 2]), ',');
-		if (!split)
-			return (ft_putstr_fd("Error\nmalloc failed\n", 2),
-				clean_exit(cub), 0);
-		if (!split[0] || !split[1] || !split[2] || split[3])
-			return (free_arrstr(split), 1);
-		color = generate_color(split[0], split[1], split[2]);
-		if (!color)
-			return (free_arrstr(split), 1);
-		if (line[j] == 'F')
-			cub->f_color = color;
-		else if (line[j] == 'C')
-			cub->c_color = color;
-		return (free_arrstr(split), *is_parsing = 1, 1);
-	}
-	return (1);
-}
-
-static char	*get_text(t_cub *cub, char *line, int j)
-{
-	char	*path;
-	int		k;
-
-	while (line[j] && (line[j] == ' ' || line[j] == '\t'))
-		j++;
-	k = j;
-	while (line[k] && line[k] != '\n' && line[k] != ' ' && line[k] != '\t')
-		k++;
-	path = ft_substr(line, j, k - j - 1);
-	if (!path)
-		return (clean_exit(cub), NULL);
-	return (path);
-}
-
-static int	read_scene_texture(t_cub *cub, char *line, int *fnd)
-{
-	int	j;
-
-	j = 0;
-	while (line[j] == ' ' || line[j] == '\t')
-		j++;
-	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path)
-		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
-		return (cub->north_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path)
-		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
-		return (cub->south_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path)
-		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
-		return (cub->west_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path)
-		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
-		return (cub->east_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	return (1);
-}
-
-static int	read_scene_args(t_cub *cub, char **scene)
-{
-	int	i;
-	int	is_parsing_args;
-
-	i = 0;
-	while (scene && scene[i])
-	{
-		is_parsing_args = 0;
-		if (!read_scene_color(cub, scene[i], &is_parsing_args))
-			return (free_arrstr(scene), 0);
-		if (!read_scene_texture(cub, scene[i], &is_parsing_args))
-			return (free_arrstr(scene), 0);
-		if (!is_parsing_args && ft_strchr(scene[i], '1'))
-		{
-			if (read_scene_map(cub, scene, i))
-				break ;
-		}
-		i++;
-	}
-	return (1);
 }
 
 static int	check_missing_args(t_cub *cub)
@@ -175,31 +57,18 @@ static t_texture	init_texture(char *path, void *mlx)
 {
 	t_texture	texture;
 
-	texture.img =  mlx_xpm_file_to_image(mlx, path, &(texture.width),
-		&(texture.height));
+	texture.img = mlx_xpm_file_to_image(mlx, path, &(texture.width),
+			&(texture.height));
 	if (!texture.img)
-		return (ft_printf("Error\nNo image found for |--%s--|\n", path), texture);
+		return (ft_printf("Error\nNo image found for |--%s--|\n", path),
+			texture);
 	texture.addr = mlx_get_data_addr(texture.img, &texture.pixel_bits,
-		&texture.line_size, &texture.endian);
+			&texture.line_size, &texture.endian);
 	return (texture);
 }
 
-int	parsing(t_cub *cub, char *path)
+static int	init_textures(t_cub *cub, char **scene)
 {
-	char	**scene;
-	size_t	len;
-
-	len = ft_strlen(path);
-	if (len < 4 || path[len - 1] != 'b' || path[len - 2] != 'u'
-		|| path[len - 3] != 'c' || path[len - 4] != '.')
-	return (ft_putstr_fd("Error\nThe <map path> must finish by \".cub\"\n", 2), 0);
-	scene = read_scene(cub, path);
-	if (!scene || !read_scene_args(cub, scene))
-		return (0);
-	if (!check_missing_args(cub))
-		return (free_arrstr(scene), clean_exit(cub), 0);
-	if (!is_map_ok(cub, cub->map))
-		return (free_arrstr(scene), clean_exit(cub), 0);
 	cub->north_img = init_texture(cub->north_path, cub->init);
 	if (!(cub->north_img.img))
 		return (free_arrstr(scene), clean_exit(cub), 0);
@@ -212,5 +81,25 @@ int	parsing(t_cub *cub, char *path)
 	cub->east_img = init_texture(cub->east_path, cub->init);
 	if (!(cub->east_img.img))
 		return (free_arrstr(scene), clean_exit(cub), 0);
+	return (1);
+}
+
+int	parsing(t_cub *cub, char *path)
+{
+	char	**scene;
+	size_t	len;
+
+	len = ft_strlen(path);
+	if (len < 4 || path[len - 1] != 'b' || path[len - 2] != 'u'
+		|| path[len - 3] != 'c' || path[len - 4] != '.')
+	return (ft_putstr_fd("Error\nThe <map path> must be a .cub\n", 2), 0);
+	scene = read_scene(cub, path);
+	if (!scene || !read_scene_args(cub, scene))
+		return (0);
+	if (!check_missing_args(cub))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	if (!is_map_ok(cub, cub->map))
+		return (free_arrstr(scene), clean_exit(cub), 0);
+	init_textures(cub, scene);
 	return (free_arrstr(scene), 1);
 }
