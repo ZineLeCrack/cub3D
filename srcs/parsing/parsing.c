@@ -48,7 +48,7 @@ static int	generate_color(char *r, char *g, char *b)
 	colors[2] = ft_atoi(b);
 	if (!colors[0] && !colors[1] && !colors[2])
 		return (ft_putstr_fd("Error\nColor argument need to follow \
-			this format <R>,<G>,<B>\n", 2), 0);
+this format <R>,<G>,<B>\n", 2), 0);
 	if (colors[0] > 255)
 		colors[0] = 255;
 	if (colors[1] > 255)
@@ -153,21 +153,21 @@ static int	read_scene_args(t_cub *cub, char **scene)
 static int	check_missing_args(t_cub *cub)
 {
 	if (!cub->north_path)
-		return (ft_putstr_fd("Error\nNO ./path_to_the_north_texture\
-			is needed\n", 2), 0);
+		return (ft_putstr_fd("Error\nNO ./path_to_the_north_texture \
+is needed\n", 2), 0);
 	if (!cub->south_path)
-		return (ft_putstr_fd("Error\nSO ./path_to_the_south_texture\
-			is needed\n", 2), 0);
+		return (ft_putstr_fd("Error\nSO ./path_to_the_south_texture \
+is needed\n", 2), 0);
 	if (!cub->west_path)
-		return (ft_putstr_fd("Error\nWE ./path_to_the_west_texture\
-			is needed\n", 2), 0);
+		return (ft_putstr_fd("Error\nWE ./path_to_the_west_texture \
+is needed\n", 2), 0);
 	if (!cub->east_path)
-		return (ft_putstr_fd("Error\nEA ./path_to_the_east_texture\
-			is needed\n", 2), 0);
+		return (ft_putstr_fd("Error\nEA ./path_to_the_east_texture \
+is needed\n", 2), 0);
 	if (!cub->f_color)
-		return (ft_putstr_fd("Error\nF <R>,<G>,<B> is needed\n\"", 2), 0);
+		return (ft_putstr_fd("Error\nF <R>,<G>,<B> is needed\n", 2), 0);
 	if (!cub->c_color)
-		return (ft_putstr_fd("Error\nC <R>,<G>,<B> is needed\n\"", 2), 0);
+		return (ft_putstr_fd("Error\nC <R>,<G>,<B> is needed\n", 2), 0);
 	return (1);
 }
 

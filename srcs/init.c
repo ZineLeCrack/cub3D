@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 10:11:37 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:22:42 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void	init_cub(t_cub *cub, char *path)
 	cub->f_color = 0;
 	cub->map = NULL;
 	cub->init = mlx_init();
+	if (!cub->init)
+		clean_exit(cub);
 	cub->win = mlx_new_window(cub->init, 1800, 900, "cub3D");
 	if (!parsing(cub, path))
 		return ;
