@@ -124,6 +124,10 @@ int			parsing(t_cub *cub, char *path);
 int			is_map_ok(t_cub *cub, char **map);
 int			flood_fill(t_cub *cub, char **map);
 int			is_one_player(char **map);
+int			read_scene_color(t_cub *cub, char *line, int *is_parsing);
+int			read_scene_args(t_cub *cub, char **scene);
+char		**read_scene(t_cub *cub, char *path);
+int			generate_color(char *r, char *g, char *b);
 int			read_scene_map(t_cub *cub, char **scene, int i);
 
 /* FREE */

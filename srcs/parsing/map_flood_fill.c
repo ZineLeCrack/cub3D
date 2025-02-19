@@ -44,43 +44,21 @@ static char	**dup_map(char **map)
 
 static int	dfs(char **map, int x, int y)
 {
-	if (x >= 0 && y >= 0)
+	if (x < 0 || y < 0 || !map[x] || !map[x][y] || (map[x][y] != '0'
+		&& map[x][y] != '1' && map[x][y] != 'N' && map[x][y] != 'S'
+		&& map[x][y] != 'W' && map[x][y] != 'E' && map[x][y] != 'V'))
+		return (0);
+	if (map[x][y] == '0' || map[x][y] == 'S' || map[x][y] == 'N'
+		|| map[x][y] == 'W' || map[x][y] == 'E')
 	{
-		if (!map[x] || !map[x][y] || (map[x][y] != '0' && map[x][y] != '1'
-			&& map[x][y] != 'N' && map[x][y] != 'S' && map[x][y] != 'W'
-			&& map[x][y] != 'E' && map[x][y] != 'V'))
+		map[x][y] = 'V';
+		if (x == 0 || y == 0)
 			return (0);
-		if (map && map[x] && map[x][y]
-			&& (map[x][y] == '0' || map[x][y] == 'S' || map[x][y] == 'N'
-				|| map[x][y] == 'W' || map[x][y] == 'E'))
-		{
-			map[x][y] = 'V';
-			if (x == 0 || y == 0)
-				return (0);
-			if (x - 1 >= 0 && y - 1 >= 0)
-				if (!dfs(map, x - 1, y - 1))
-					return (0);
-			if (x - 1 >= 0)
-			{
-				if (!dfs(map, x - 1, y))
-					return (0);
-				if (!dfs(map, x - 1, y + 1))
-					return (0);
-			}
-			if (y - 1 >= 0)
-			{
-				if (!dfs(map, x, y - 1))
-					return (0);
-				if (!dfs(map, x + 1, y - 1))
-					return (0);
-			}
-			if (!dfs(map, x + 1, y + 1))
-				return (0);
-			if (!dfs(map, x + 1, y))
-				return (0);
-			if (!dfs(map, x, y + 1))
-				return (0);
-		}
+		if (!dfs(map, x - 1, y - 1) || !dfs(map, x - 1, y)
+			|| !dfs(map, x - 1, y + 1) || !dfs(map, x, y - 1)
+			|| !dfs(map, x + 1, y - 1) || !dfs(map, x + 1, y + 1)
+			|| !dfs(map, x + 1, y) || !dfs(map, x, y + 1))
+			return (0);
 	}
 	return (1);
 }
