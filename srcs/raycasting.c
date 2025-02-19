@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/18 18:47:10 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:56:40 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	draw_column(float *d, int c[2], char *addr, int infos[3],
 	int		coo[2];
 	int		column;
 	int		img_size[2];
-	int		texY;
+	int		texy;
 	char	*img_addr;
 	float	step;
 	float	line;
@@ -87,22 +87,21 @@ void	draw_column(float *d, int c[2], char *addr, int infos[3],
 	step = (float)img_size[1] / (float)h;
 	while (++coo[1] < 900 - (roof_floor * 0.5))
 	{
-		texY = (int)line;
-		if (texY < 0)
-			texY = 0;
-		if (texY >= img_size[1])
-			texY = img_size[1] - 1;
-		index = (texY * img_size[0] * 4) + column * 4; // if (index < 0 || index >= width * height) continue;
+		texy = (int)line;
+		if (texy < 0)
+			texy = 0;
+		if (texy >= img_size[1])
+			texy = img_size[1] - 1;
+		index = (texy * img_size[0] * 4) + column * 4;
 		color = (img_addr[index] & 0xFF)
-				| ((img_addr[index + 1] & 0xFF) << 8)
-				| ((img_addr[index + 2] & 0xFF) << 16);
+			| ((img_addr[index + 1] & 0xFF) << 8)
+			| ((img_addr[index + 2] & 0xFF) << 16);
 		my_mlx_pixel_put(addr, coo, color, infos);
 		line += step;
 	}
 	while (++coo[1] < 900)
 		my_mlx_pixel_put(addr, coo, cub->c_color, infos);
 }
-
 
 float	ft_hit_wall(float x, float y, float *step, t_cub *cub)
 {
@@ -148,17 +147,10 @@ void	raycasting(t_cub *cub, float angle, int infos[3], char *addr)
 		coo[1] = cub->player.y;
 		step[0] = cosf(angle) * 0.01;
 		step[1] = sinf(angle) * 0.01;
-		while (1)
-		{
-			place_hit = ft_hit_wall(coo[0], coo[1], step, cub);
-			if (place_hit != -1)
-				break ;
-			coo[0] += step[0];
-			coo[1] += step[1];
-		}
+		place_hit = ft_find_place_hit(cub, &coo[0], &coo[1], step);
 		d = sqrtf(((coo[0] - cub->player.x) * (coo[0] - cub->player.x))
 				+ ((coo[1] - cub->player.y) * (coo[1] - cub->player.y)))
-				* cosf(angle - atan2f(cub->player.dir.y, cub->player.dir.x));
+			* cosf(angle - atan2f(cub->player.dir.y, cub->player.dir.x));
 		c[1] = get_dir(step[0], step[1], coo);
 		draw_column(&d, c, addr, infos, place_hit, cub);
 		c[0]++;

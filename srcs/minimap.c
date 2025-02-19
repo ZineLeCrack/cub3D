@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:51:09 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/11 14:07:29 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:21:31 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,23 @@ int	get_length(t_cub *cub, float y)
 	return (i);
 }
 
+static void	ft_write_minimap(t_cub *cub, float tmp_coo[2], int mini_coo[2],
+	char *addr, int infos[3])
+{
+	if (tmp_coo[0] < 0 || tmp_coo[1] < 0
+		|| tmp_coo[1] > get_heigth(cub)
+		|| tmp_coo[0] > get_length(cub, tmp_coo[1]))
+		my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
+	else if (cub->map[(int)floorf(tmp_coo[1])]
+		[(int)floorf(tmp_coo[0])] == '1')
+		my_mlx_pixel_put(addr, mini_coo, 0xC0C0C0, infos);
+	else if (cub->map[(int)floorf(tmp_coo[1])]
+		[(int)floorf(tmp_coo[0])] == ' ')
+		my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
+	else
+		my_mlx_pixel_put(addr, mini_coo, 0xFFFFFF, infos);
+}
+
 static void	ft_put_decor_around_player(t_cub *cub, char *addr, int infos[3])
 {
 	int		mini_coo[2];
@@ -49,18 +66,7 @@ static void	ft_put_decor_around_player(t_cub *cub, char *addr, int infos[3])
 		tmp_coo[0] = pl_coo[0] - 5;
 		while (tmp_coo[0] < pl_coo[0] + 5)
 		{
-			if (tmp_coo[0] < 0 || tmp_coo[1] < 0
-				|| tmp_coo[1] > get_heigth(cub)
-				|| tmp_coo[0] > get_length(cub, tmp_coo[1]))
-				my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
-			else if (cub->map[(int)floorf(tmp_coo[1])]
-				[(int)floorf(tmp_coo[0])] == '1')
-				my_mlx_pixel_put(addr, mini_coo, 0xC0C0C0, infos);
-			else if (cub->map[(int)floorf(tmp_coo[1])]
-				[(int)floorf(tmp_coo[0])] == ' ')
-				my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
-			else
-				my_mlx_pixel_put(addr, mini_coo, 0xFFFFFF, infos);
+			ft_write_minimap(cub, tmp_coo, mini_coo, addr, infos);
 			tmp_coo[0] += 0.05;
 			mini_coo[0]++;
 		}

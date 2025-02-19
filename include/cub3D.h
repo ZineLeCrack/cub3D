@@ -89,7 +89,7 @@ void		turn_cam(t_cub *cub);
 int			key_release(int key, t_cub *cub);
 int			key_press(int key, t_cub *cub);
 
-/* RAYCASTING FUNCTIONS */
+/* RAYCASTING FUNCTIONS AND UTILS */
 
 void		my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3]);
 void		raycasting(t_cub *cub, float angle, int infos[3], char *addr);
@@ -97,6 +97,7 @@ void		draw_column(float *d, int c[4], char *addr, int infos[3],
 				float place_hit, t_cub *cub);
 float		ft_hit_wall(float x, float y, float *step, t_cub *cub);
 int			get_dir(float x, float y, float coo[2]);
+float		ft_find_place_hit(t_cub *cub, float *x, float *y, float step[2]);
 
 /* MINIMAP */
 

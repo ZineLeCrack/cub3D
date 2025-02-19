@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 15:22:42 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:14:24 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,8 @@ int	ft_count_line(char *path)
 	return (count);
 }
 
-void	init_cub(t_cub *cub, char *path)
+static void	set_null(t_cub *cub)
 {
-	int	i;
-
-	i = 0;
-	while (i < 65536)
-		cub->keys[i++] = 0;
-	i = 0;
 	cub->init = NULL;
 	cub->win = NULL;
 	cub->north_path = NULL;
@@ -94,9 +88,20 @@ void	init_cub(t_cub *cub, char *path)
 	cub->south_img.img = NULL;
 	cub->east_img.img = NULL;
 	cub->west_img.img = NULL;
+	cub->map = NULL;
+}
+
+void	init_cub(t_cub *cub, char *path)
+{
+	int	i;
+
+	i = 0;
+	while (i < 65536)
+		cub->keys[i++] = 0;
+	i = 0;
+	set_null(cub);
 	cub->c_color = 0;
 	cub->f_color = 0;
-	cub->map = NULL;
 	cub->init = mlx_init();
 	if (!cub->init)
 		clean_exit(cub);
