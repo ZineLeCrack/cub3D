@@ -68,6 +68,8 @@ typedef struct s_cub
 	t_texture	east_img;
 	int			f_color;
 	int			c_color;
+	char		*addr;
+	int			infos[3];
 	char		**map;
 	void		*init;
 	void		*win;
@@ -92,12 +94,16 @@ int			key_press(int key, t_cub *cub);
 /* RAYCASTING FUNCTIONS AND UTILS */
 
 void		my_mlx_pixel_put(char *addr, int coo[2], int color, int infos[3]);
-void		raycasting(t_cub *cub, float angle, int infos[3], char *addr);
-void		draw_column(float *d, int c[4], char *addr, int infos[3],
-				float place_hit, t_cub *cub);
+void		raycasting(t_cub *cub, float angle);
+void		draw_column(float *d, int c[2],	float place_hit, t_cub *cub);
 float		ft_hit_wall(float x, float y, float *step, t_cub *cub);
 int			get_dir(float x, float y, float coo[2]);
 float		ft_find_place_hit(t_cub *cub, float *x, float *y, float step[2]);
+int			ft_find_color(char *img_addr, int index);
+int			ft_find_index(float *line, int img_size[2], int column, float step);
+int			ft_find_column(float place_hit, int img_size[2]);
+void		ft_draw_column_when_close(t_cub *cub, char *img_addr,
+			int img_size[2], int h, int coo[2]);
 
 /* MINIMAP */
 
