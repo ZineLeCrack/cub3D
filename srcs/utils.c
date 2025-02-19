@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/12 19:58:18 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/19 09:11:44 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int	clean_exit(t_cub *cub)
 			free(cub->map[i++]);
 		free(cub->map);
 	}
+	mlx_destroy_image(cub->init, cub->north_img.img);
+	mlx_destroy_image(cub->init, cub->south_img.img);
+	mlx_destroy_image(cub->init, cub->east_img.img);
+	mlx_destroy_image(cub->init, cub->west_img.img);
 	if (cub->init)
 	{
 		mlx_destroy_window(cub->init, cub->win);
