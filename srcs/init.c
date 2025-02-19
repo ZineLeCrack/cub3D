@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:38:41 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/13 18:41:17 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/19 10:11:37 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,10 @@ void	init_cub(t_cub *cub, char *path)
 	cub->south_path = NULL;
 	cub->west_path = NULL;
 	cub->east_path = NULL;
+	cub->north_img.img = NULL;
+	cub->south_img.img = NULL;
+	cub->east_img.img = NULL;
+	cub->west_img.img = NULL;
 	cub->c_color = 0;
 	cub->f_color = 0;
 	cub->map = NULL;

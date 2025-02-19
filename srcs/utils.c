@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:36:32 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 09:11:44 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:03:03 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,21 @@ int	clean_exit(t_cub *cub)
 			free(cub->map[i++]);
 		free(cub->map);
 	}
-	mlx_destroy_image(cub->init, cub->north_img.img);
-	mlx_destroy_image(cub->init, cub->south_img.img);
-	mlx_destroy_image(cub->init, cub->east_img.img);
-	mlx_destroy_image(cub->init, cub->west_img.img);
+	if (cub->north_img.img)
+		mlx_destroy_image(cub->init, cub->north_img.img);
+	if (cub->south_img.img)
+		mlx_destroy_image(cub->init, cub->south_img.img);
+	if (cub->east_img.img)
+		mlx_destroy_image(cub->init, cub->east_img.img);
+	if (cub->west_img.img)
+		mlx_destroy_image(cub->init, cub->west_img.img);
 	if (cub->init)
 	{
 		mlx_destroy_window(cub->init, cub->win);
 		mlx_destroy_display(cub->init);
 		free(cub->init);
 	}
-	exit(0);
-	return (0);
+	return (exit(0), 0);
 }
 
 t_vector	create_vector(float n, float x, float y)

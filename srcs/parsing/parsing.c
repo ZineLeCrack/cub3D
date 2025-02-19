@@ -112,13 +112,17 @@ static int	read_scene_texture(t_cub *cub, char *line, int *fnd)
 	j = 0;
 	while (line[j] == ' ' || line[j] == '\t')
 		j++;
-	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path))
+	if (line[j] == 'N' && line[j + 1] == 'O' && !(cub->north_path)
+		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
 		return (cub->north_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path))
+	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cub->south_path)
+		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
 		return (cub->south_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path))
+	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cub->west_path)
+		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
 		return (cub->west_path = get_text(cub, line, j + 2), *fnd = 1, 1);
-	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path))
+	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cub->east_path)
+		&& line[j + 2] && (line[j + 2] == ' ' || line[j + 2] == '\t'))
 		return (cub->east_path = get_text(cub, line, j + 2), *fnd = 1, 1);
 	return (1);
 }
@@ -190,9 +194,7 @@ int	parsing(t_cub *cub, char *path)
 		|| path[len - 3] != 'c' || path[len - 4] != '.')
 	return (ft_putstr_fd("Error\nThe <map path> must finish by \".cub\"\n", 2), 0);
 	scene = read_scene(cub, path);
-	if (!scene)
-		return (0);
-	if (!read_scene_args(cub, scene))
+	if (!scene || !read_scene_args(cub, scene))
 		return (0);
 	if (!check_missing_args(cub))
 		return (free_arrstr(scene), clean_exit(cub), 0);
