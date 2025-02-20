@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:22:37 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 21:50:45 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/20 11:16:52 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ int	ft_find_column(float place_hit, t_texture *img)
 }
 
 void	ft_draw_column_when_close(t_cub *cub, t_texture *img,
-			int h, int coo[2], float place_hit)
+			int coo[2], float place_hit)
 {
 	float	step;
 	float	coef;
 	int		begin;
 	float	line;
 	int		column;
-	
+
 	column = ft_find_column(place_hit, img);
-	coef = 900 / (float)h;
+	coef = 900 / (float)cub->h;
 	begin = (int)((1 - coef) / 2 * img->height);
 	step = (coef * img->height) / 900;
 	line = begin;

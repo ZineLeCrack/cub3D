@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:37:46 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 21:37:23 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/20 11:18:40 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,26 @@ t_texture	*put_img_infos(int dir, t_cub *cub)
 
 void	draw_column(float *d, int c[2],	float place_hit, t_cub *cub)
 {
-	int			h[2];
+	int			height;
 	int			coo[2];
 	t_texture	*img;
 	float		step;
 	float		line;
 
 	img = put_img_infos(c[1], cub);
-	h[0] = (int)roundf(900 / *d);
-	if (h[0] < 0)
-		h[0] = 0;
+	cub->h = (int)roundf(900 / *d);
+	if (cub->h < 0)
+		cub->h = 0;
 	coo[0] = c[0];
 	coo[1] = -1;
-	if (h[0] >= 900)
-		ft_draw_column_when_close(cub, img, h[0], coo, place_hit);
-	h[1] = (900 - h[0]) * 0.5;
-	while (++coo[1] < h[1])
+	if (cub->h >= 900)
+		ft_draw_column_when_close(cub, img, coo, place_hit);
+	height = (900 - cub->h) * 0.5;
+	while (++coo[1] < height)
 		my_mlx_pixel_put(cub->addr, coo, cub->f_color, cub->infos);
 	line = 0.0;
-	step = (float)img->width / (float)h[0];
-	while (++coo[1] < 900 - h[1])
+	step = (float)img->width / (float)cub->h;
+	while (++coo[1] < 900 - height)
 		my_mlx_pixel_put(cub->addr, coo, ft_find_color(img->addr,
 				ft_find_index(&line, img,
 					ft_find_column(place_hit, img), step)), cub->infos);

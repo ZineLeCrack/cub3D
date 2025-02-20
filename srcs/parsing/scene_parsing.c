@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:44:30 by mduvey            #+#    #+#             */
-/*   Updated: 2025/02/20 09:31:14 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/20 11:13:42 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,31 +116,4 @@ int	read_scene_args(t_cub *cub, char **scene)
 		i++;
 	}
 	return (1);
-}
-
-char	**read_scene(t_cub *cub, char *path)
-{
-	char	**scene;
-	char	*line;
-	int		fd;
-	int		i;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ft_putstr_fd("Error\nfailed to open file\n", 2), NULL);
-	scene = malloc(sizeof(char *) * (ft_count_line(path) + 1));
-	if (!scene)
-		return (ft_putstr_fd("Error\nmalloc failed\n", 2), clean_exit(cub),
-			close(fd), NULL);
-	i = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		scene[i] = line;
-		i++;
-	}
-	scene[i] = NULL;
-	return (close(fd), scene);
 }

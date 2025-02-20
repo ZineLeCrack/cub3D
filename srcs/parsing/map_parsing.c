@@ -12,6 +12,33 @@
 
 #include "../../include/cub3D.h"
 
+char	**read_scene(t_cub *cub, char *path)
+{
+	char	**scene;
+	char	*line;
+	int		fd;
+	int		i;
+
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return (ft_putstr_fd("Error\nfailed to open file\n", 2), NULL);
+	scene = malloc(sizeof(char *) * (ft_count_line(path) + 1));
+	if (!scene)
+		return (ft_putstr_fd("Error\nmalloc failed\n", 2), clean_exit(cub),
+			close(fd), NULL);
+	i = 0;
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		scene[i] = line;
+		i++;
+	}
+	scene[i] = NULL;
+	return (close(fd), scene);
+}
+
 static int	does_map_contain_player(char **map)
 {
 	int	number;
