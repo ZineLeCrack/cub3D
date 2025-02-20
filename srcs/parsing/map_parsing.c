@@ -95,6 +95,29 @@ int	read_scene_map(t_cub *cub, char **scene, int i)
 	return (cub->map = map, 1);
 }
 
+static int	does_map_contain_valid_chars(char **map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] && map[i][j] != 13
+				&& map[i][j] != '1' && map[i][j] != ' ' && map[i][j] != '\t'
+				&& map[i][j] != '0' && map[i][j] != 'N' && map[i][j] != '\n'
+				&& map[i][j] != 'W' && map[i][j] != 'E' && map[i][j] != 'S')
+				return (printf("invalid char = '%i'\n", map[i][j]), 1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	is_map_ok(t_cub *cub, char **map)
 {
 	if (!(map))
@@ -103,5 +126,7 @@ int	is_map_ok(t_cub *cub, char **map)
 		return (ft_putstr_fd("Error\nMap should contain 1 player\n", 2), 0);
 	if (!flood_fill(cub, map))
 		return (ft_putstr_fd("Error\nMap has to be closed\n", 2), 0);
+	if (does_map_contain_valid_chars(map))
+		return (ft_putstr_fd("Error\nMap contain invalid chars\n", 2), 0);
 	return (1);
 }
