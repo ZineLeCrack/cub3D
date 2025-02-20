@@ -6,17 +6,18 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:44:30 by mduvey            #+#    #+#             */
-/*   Updated: 2025/02/20 11:13:42 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:31:55 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
 
-char	*trim_n(char *str)
+char	**trim_n(char *str)
 {
 	int		start;
 	int		i;
 	char	*result;
+	char	**split;
 
 	start = 0;
 	while (str[start] == ' ' || str[start] == '\t' || str[start] == '\n')
@@ -25,7 +26,9 @@ char	*trim_n(char *str)
 	while (str[start + i] && str[start + i + 1] != '\n')
 		i++;
 	result = ft_substr(str, start, i);
-	return (result);
+	split = ft_split(result, ',');
+	free(result);
+	return (split);
 }
 
 int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
@@ -39,7 +42,7 @@ int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
 		j++;
 	if ((line[j] == 'C' || line[j] == 'F'))
 	{
-		split = ft_split(trim_n(&(line[j + 2])), ',');
+		split = trim_n(&(line[j + 2]));
 		if (!split)
 			return (ft_putstr_fd("Error\nmalloc failed\n", 2),
 				clean_exit(cub), 0);
