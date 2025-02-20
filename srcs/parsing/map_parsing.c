@@ -71,10 +71,10 @@ int	read_scene_map(t_cub *cub, char **scene, int i)
 int	is_map_ok(t_cub *cub, char **map)
 {
 	if (!(map))
-		return (ft_printf("Error\nMap should exist\n"), 0);
+		return (ft_putstr_fd("Error\nMap should exist\n", 2), 2);
 	if (!does_map_contain_player(map))
-		return (ft_printf("Error\nMap should contain 1 player\n"), 0);
+		return (ft_putstr_fd("Error\nMap should contain 1 player\n", 2), 0);
 	if (!flood_fill(cub, map))
-		return (ft_printf("Error\nMap has to be closed\n"), 0);
+		return (ft_putstr_fd("Error\nMap has to be closed\n", 2), 0);
 	return (1);
 }

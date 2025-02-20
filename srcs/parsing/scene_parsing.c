@@ -6,11 +6,27 @@
 /*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:44:30 by mduvey            #+#    #+#             */
-/*   Updated: 2025/02/19 15:47:50 by mduvey           ###   ########.fr       */
+/*   Updated: 2025/02/20 09:31:14 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3D.h"
+
+char	*trim_n(char *str)
+{
+	int		start;
+	int		i;
+	char	*result;
+
+	start = 0;
+	while (str[start] == ' ' || str[start] == '\t' || str[start] == '\n')
+		start++;
+	i = 0;
+	while (str[start + i] && str[start + i + 1] != '\n')
+		i++;
+	result = ft_substr(str, start, i);
+	return (result);
+}
 
 int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
 {
@@ -21,17 +37,17 @@ int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
 	j = 0;
 	while (line[j] == ' ' || line[j] == '\t')
 		j++;
-	if ((line[j] == 'C' || line[j] == 'F')
-		&& (line[j + 1] == ' ' || line[j + 1] == '\t'))
+	if ((line[j] == 'C' || line[j] == 'F'))
 	{
-		split = ft_split(&(line[j + 2]), ',');
+		split = ft_split(trim_n(&(line[j + 2])), ',');
 		if (!split)
 			return (ft_putstr_fd("Error\nmalloc failed\n", 2),
 				clean_exit(cub), 0);
+		if (!ft_strlen(split[0]) || !ft_strlen(split[1]) || !ft_strlen(split[2])
+			|| split[3])
+			return (ft_putstr_fd("Error\nC <R>,<G>,<B>\n", 2),
+				free_arrstr(split), clean_exit(cub), 0);
 		color = generate_color(split[0], split[1], split[2]);
-		if (!split[0] || !split[1] || !split[2] || split[3]
-			|| !color)
-			return (free_arrstr(split), 1);
 		if (line[j] == 'F')
 			cub->f_color = color;
 		else if (line[j] == 'C')

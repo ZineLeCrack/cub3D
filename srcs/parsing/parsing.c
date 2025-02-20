@@ -60,7 +60,7 @@ static t_texture	init_texture(char *path, void *mlx)
 	texture.img = mlx_xpm_file_to_image(mlx, path, &(texture.width),
 			&(texture.height));
 	if (!texture.img)
-		return (ft_printf("Error\nNo image found for |--%s--|\n", path),
+		return (ft_printf("Error\n%s isn't found\n", path),
 			texture);
 	texture.addr = mlx_get_data_addr(texture.img, &texture.pixel_bits,
 			&texture.line_size, &texture.endian);
