@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:44:30 by mduvey            #+#    #+#             */
-/*   Updated: 2025/02/20 11:13:42 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:09:07 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,31 @@ char	*trim_n(char *str)
 	return (result);
 }
 
-int	read_scene_color(t_cub *cub, char *line, int *is_parsing)
+int	read_scene_color(t_cub *cub, char *tmp_line, int *is_parsing)
 {
-	int		j;
 	char	**split;
 	int		color;
+	char	*line;
 
-	j = 0;
-	while (line[j] == ' ' || line[j] == '\t')
-		j++;
-	if ((line[j] == 'C' || line[j] == 'F'))
+	line = trim_n(&(tmp_line[2]));
+	if ((tmp_line[0] == 'C' || tmp_line[0] == 'F'))
 	{
-		split = ft_split(trim_n(&(line[j + 2])), ',');
+		split = ft_split(line, ',');
 		if (!split)
 			return (ft_putstr_fd("Error\nmalloc failed\n", 2),
-				clean_exit(cub), 0);
+				free(line), clean_exit(cub), 0);
 		if (!ft_strlen(split[0]) || !ft_strlen(split[1]) || !ft_strlen(split[2])
 			|| split[3])
 			return (ft_putstr_fd("Error\nC <R>,<G>,<B>\n", 2),
-				free_arrstr(split), clean_exit(cub), 0);
+				free_arrstr(split), free(line), clean_exit(cub), 0);
 		color = generate_color(split[0], split[1], split[2]);
-		if (line[j] == 'F')
+		if (tmp_line[0]  == 'F')
 			cub->f_color = color;
-		else if (line[j] == 'C')
+		else if (tmp_line[0]  == 'C')
 			cub->c_color = color;
-		return (free_arrstr(split), *is_parsing = 1, 1);
+		return (free_arrstr(split), free(line), *is_parsing = 1, 1);
 	}
+	free(line);
 	return (1);
 }
 
