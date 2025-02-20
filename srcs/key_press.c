@@ -6,7 +6,7 @@
 /*   By: rlebaill <rlebaill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 13:07:26 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/20 14:19:42 by rlebaill         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:34:41 by rlebaill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ static int	can_move(int key, t_cub *cub)
 	dir[0] = cub->player.dir.x;
 	dir[1] = cub->player.dir.y;
 	if (key == 'w')
-		if (cub->map[(int)floorf(pl_coo[1] + dir[1] * 0.1)]
-			[(int)floorf(pl_coo[0] + dir[0] * 0.1)] != '1')
+		if (cub->map[(int)floorf(pl_coo[1] + dir[1] * 0.3)]
+			[(int)floorf(pl_coo[0] + dir[0] * 0.3)] != '1')
 			return (1);
 	if (key == 's')
-		if (cub->map[(int)floorf(pl_coo[1] - dir[1] * 0.1)]
-			[(int)floorf(pl_coo[0] - dir[0] * 0.1)] != '1')
+		if (cub->map[(int)floorf(pl_coo[1] - dir[1] * 0.3)]
+			[(int)floorf(pl_coo[0] - dir[0] * 0.3)] != '1')
 			return (1);
 	if (key == 'a')
-		if (cub->map[(int)floorf(pl_coo[1] - dir[0] * 0.1)]
-			[(int)floorf(pl_coo[0] + dir[1] * 0.1)] != '1')
+		if (cub->map[(int)floorf(pl_coo[1] - dir[0] * 0.3)]
+			[(int)floorf(pl_coo[0] + dir[1] * 0.3)] != '1')
 			return (1);
 	if (key == 'd')
-		if (cub->map[(int)floorf(pl_coo[1] + dir[0] * 0.1)]
-			[(int)floorf(pl_coo[0] - dir[1] * 0.1)] != '1')
+		if (cub->map[(int)floorf(pl_coo[1] + dir[0] * 0.3)]
+			[(int)floorf(pl_coo[0] - dir[1] * 0.3)] != '1')
 			return (1);
 	return (0);
 }
