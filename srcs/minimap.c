@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mduvey <mduvey@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:51:09 by rlebaill          #+#    #+#             */
-/*   Updated: 2025/02/19 21:11:34 by romain           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:44:16 by mduvey           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	ft_write_minimap(t_cub *cub, float coo[4], char *addr, int infos[3])
 		[(int)floorf(coo[2])] == '1')
 		my_mlx_pixel_put(addr, mini_coo, 0xC0C0C0, infos);
 	else if (cub->map[(int)floorf(coo[3])]
-		[(int)floorf(coo[2])] == ' ')
+		[(int)floorf(coo[2])] == ' ' || cub->map[(int)floorf(coo[3])]
+		[(int)floorf(coo[2])] == 13)
 		my_mlx_pixel_put(addr, mini_coo, 0x000000, infos);
 	else
 		my_mlx_pixel_put(addr, mini_coo, 0xFFFFFF, infos);

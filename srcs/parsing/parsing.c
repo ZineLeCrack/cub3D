@@ -92,7 +92,8 @@ int	parsing(t_cub *cub, char *path)
 	len = ft_strlen(path);
 	if (len < 4 || path[len - 1] != 'b' || path[len - 2] != 'u'
 		|| path[len - 3] != 'c' || path[len - 4] != '.')
-		return (ft_putstr_fd("Error\nThe <map path> must be a .cub\n", 2), 0);
+		return (ft_putstr_fd("Error\nThe <map path> must be a .cub\n", 2),
+			clean_exit(cub), 0);
 	scene = read_scene(cub, path);
 	if (!scene || !read_scene_args(cub, scene))
 		return (0);
