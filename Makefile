@@ -16,17 +16,18 @@ SRCS = srcs/ft_printf/ft_printf.c srcs/ft_printf/ft_putchar.c srcs/ft_printf/ft_
 	   srcs/libft/ft_lstnew_bonus.c srcs/libft/ft_lstadd_front_bonus.c srcs/libft/ft_lstsize_bonus.c srcs/libft/ft_lstlast_bonus.c \
 	   srcs/libft/ft_lstadd_back_bonus.c srcs/libft/ft_lstdelone_bonus.c srcs/libft/ft_lstclear_bonus.c srcs/libft/ft_lstiter_bonus.c srcs/libft/ft_lstmap_bonus.c \
 	   srcs/get_next_line/get_next_line_utils.c srcs/get_next_line/get_next_line.c \
-	   srcs/init.c srcs/key_press.c srcs/minimap.c srcs/raycasting.c srcs/raycasting_utils.c srcs/utils.c srcs/utils2.c srcs/free.c srcs/main.c
-
-## MAP PARSING
-SRCS += srcs/parsing/parsing.c srcs/parsing/map_parsing.c srcs/parsing/map_flood_fill.c srcs/parsing/map_player.c \
-		srcs/parsing/scene_parsing.c
+	   srcs/init.c srcs/key_press.c srcs/minimap.c srcs/raycasting.c srcs/raycasting_utils.c srcs/utils.c srcs/utils2.c srcs/free.c srcs/main.c \
+	   srcs/parsing/parsing.c srcs/parsing/map_parsing.c srcs/parsing/map_flood_fill.c srcs/parsing/map_player.c \
+	   srcs/parsing/scene_parsing.c
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+minilibx-linux/libmlx.a:
+	@$(MAKE) -C minilibx-linux 
+
+$(NAME): minilibx-linux/libmlx.a $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLXFLAGS)
 
 clean:
@@ -34,6 +35,7 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	@$(MAKE) -C minilibx-linux clean
 
 re: fclean all
 
